@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">হেমোস্ক্যান</string>
+    <string name="reset_password_header">আপনার অ্যাকাউন্ট সুরক্ষিত করুন</string>
+    <string name="reset_password_subtitle">পাসওয়ার্ড রিসেট করতে নিচে তথ্য পূরণ করুন।</string>
+    <string name="label_username_email">ব্যবহারকারীর নাম বা ইমেইল</string>
+    <string name="label_new_password">নতুন পাসওয়ার্ড</string>
+    <string name="label_confirm_password">নতুন পাসওয়ার্ড নিশ্চিত করুন</string>
+    <string name="action_update_password">পাসওয়ার্ড আপডেট করুন</string>
+    <string name="action_back_to_login">লগইনে ফিরে যান</string>
+    <string name="label_total_scans">মোট স্ক্যান</string>
+    <string name="label_normal">স্বাভাবিক</string>
+    <string name="label_abnormal">অস্বাভাবিক</string>
+    <string name="label_today">আজ</string>
+    <string name="label_recent_scans">সাম্প্রতিক স্ক্যান</string>
+    <string name="label_view_all">সব দেখুন</string>
+    <string name="action_start_new_scan">নতুন স্ক্যান শুরু করুন</string>
+    <string name="label_password">পাসওয়ার্ড</string>
+    <string name="action_login">লগইন</string>
+    <string name="action_forgot_password">পাসওয়ার্ড ভুলে গেছেন?</string>
+    <string name="label_full_name">পূর্ণ নাম</string>
+    <string name="action_signup">সাইন আপ</string>
+    <string name="action_go_to_dashboard">ড্যাশবোর্ডে যান</string>
+    <string name="feature_ai">AI-চালিত রোগনির্ণয়</string>
+    <string name="feature_realtime">রিয়েল-টাইম ফলাফল</string>
+    <string name="feature_secure">সুরক্ষিত রোগীর রেকর্ড</string>
+</resources>

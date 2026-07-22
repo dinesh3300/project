@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Soft Depth Shadow Layer (offset down by 10dp) -->
+    <item android:top="10dp" android:left="8dp" android:right="8dp" android:bottom="0dp">
+        <shape android:shape="rectangle">
+            <gradient
+                android:startColor="#20475569"
+                android:endColor="#00000000"
+                android:angle="270" />
+            <corners android:radius="24dp" />
+        </shape>
+    </item>
+    
+    <!-- Main Card Background Layer -->
+    <item android:top="0dp" android:left="0dp" android:right="0dp" android:bottom="10dp">
+        <shape android:shape="rectangle">
+            <solid android:color="#FFFFFF" />
+            <corners android:radius="24dp" />
+        </shape>
+    </item>
+</layer-list>

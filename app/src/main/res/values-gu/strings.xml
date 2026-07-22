@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">હેમોસ્કેન</string>
+    <string name="reset_password_header">તમારું ખાતું સુરક્ષિત કરો</string>
+    <string name="reset_password_subtitle">પાસવર્ડ રીસેટ કરવા માટે નીચેની માહિતી ભરો.</string>
+    <string name="label_username_email">વપરાશકર્તા નામ અથવા ઈ-મેઇલ</string>
+    <string name="label_new_password">નવો પાસવર્ડ</string>
+    <string name="label_confirm_password">નવો પાસવર્ડ ફરી દાખલ કરો</string>
+    <string name="action_update_password">પાસવર્ડ અપડેટ કરો</string>
+    <string name="action_back_to_login">લૉગિન પર પાછા જાઓ</string>
+    <string name="label_total_scans">કુલ સ્કેન</string>
+    <string name="label_normal">સામાન્ય</string>
+    <string name="label_abnormal">અસામાન્ય</string>
+    <string name="label_today">આજે</string>
+    <string name="label_recent_scans">તાજેતરના સ્કેન</string>
+    <string name="label_view_all">બધા જુઓ</string>
+    <string name="action_start_new_scan">નવું સ્કેન શરૂ કરો</string>
+    <string name="label_password">પાસવર્ડ</string>
+    <string name="action_login">લૉગ ઇન</string>
+    <string name="action_forgot_password">પાસવર્ડ ભૂલી ગયા?</string>
+    <string name="label_full_name">પૂરું નામ</string>
+    <string name="action_signup">સાઇન અપ</string>
+    <string name="action_go_to_dashboard">ડૅશ્‌બોર્ડ પર જાઓ</string>
+    <string name="feature_ai">AI-સંચાલિત નિદાન</string>
+    <string name="feature_realtime">રીઅલ-ટાઇમ પરિણામ</string>
+    <string name="feature_secure">સુરક્ષિત દર્દી રેકૉર્ડ</string>
+</resources>

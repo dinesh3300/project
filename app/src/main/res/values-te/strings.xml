@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">హేమోస్కాన్</string>
+    <string name="reset_password_header">మీ ఖాతాను సురక్షితపరచండి</string>
+    <string name="reset_password_subtitle">పాస్‌వర్డ్‌ని రీసెట్ చేయడానికి దయచేసి దిగువ వివరాలను పూరించండి.</string>
+    <string name="label_username_email">వినియోగదారు పేరు లేదా ఇమెయిల్</string>
+    <string name="label_new_password">కొత్త పాస్‌వర్డ్</string>
+    <string name="label_confirm_password">కొత్త పాస్‌వర్డ్‌ని నిర్ధారించండి</string>
+    <string name="action_update_password">పాస్‌వర్డ్‌ని నవీకరించండి</string>
+    <string name="action_back_to_login">లాగిన్‌కు తిరిగి వెళ్ళండి</string>
+    <string name="label_total_scans">మొత్తం స్కాన్లు</string>
+    <string name="label_normal">సాధారణ</string>
+    <string name="label_abnormal">అసాధారణ</string>
+    <string name="label_today">ఈరోజు</string>
+    <string name="label_recent_scans">ఇటీవలి స్కాన్లు</string>
+    <string name="label_view_all">అన్నీ చూడండి</string>
+    <string name="action_start_new_scan">కొత్త స్కాన్ ప్రారంభించండి</string>
+    <string name="label_password">పాస్‌వర్డ్</string>
+    <string name="action_login">లాగిన్</string>
+    <string name="action_forgot_password">పాస్‌వర్డ్ మరచిపోయారా?</string>
+    <string name="label_full_name">పూర్తి పేరు</string>
+    <string name="action_signup">సైన్ అప్</string>
+    <string name="action_go_to_dashboard">డాష్‌బోర్డ్‌కు వెళ్ళండి</string>
+    <string name="feature_ai">AI-ఆధారిత వ్యాధి నిర్ధారణ</string>
+    <string name="feature_realtime">రియల్-టైమ్ ఫలితాలు</string>
+    <string name="feature_secure">సురక్షిత రోగి రికార్డులు</string>
+</resources>

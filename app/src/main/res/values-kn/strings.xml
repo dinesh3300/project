@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ಹೀಮೋಸ್ಕ್ಯಾನ್</string>
+    <string name="reset_password_header">ನಿಮ್ಮ ಖಾತೆ ಸುರಕ್ಷಿತಗೊಳಿಸಿ</string>
+    <string name="reset_password_subtitle">ಪಾಸ್‌ವರ್ಡ್ ರೀಸೆಟ್ ಮಾಡಲು ಕೆಳಗೆ ವಿವರಗಳನ್ನು ತುಂಬಿಸಿ.</string>
+    <string name="label_username_email">ಬಳಕೆದಾರ ಹೆಸರು ಅಥವಾ ಇಮೇಲ್</string>
+    <string name="label_new_password">ಹೊಸ ಪಾಸ್‌ವರ್ಡ್</string>
+    <string name="label_confirm_password">ಹೊಸ ಪಾಸ್‌ವರ್ಡ್ ದೃಢೀಕರಿಸಿ</string>
+    <string name="action_update_password">ಪಾಸ್‌ವರ್ಡ್ ಅಪ್‌ಡೇಟ್ ಮಾಡಿ</string>
+    <string name="action_back_to_login">ಲಾಗಿನ್‌ಗೆ ಹಿಂತಿರುಗಿ</string>
+    <string name="label_total_scans">ಒಟ್ಟು ಸ್ಕ್ಯಾನ್‌ಗಳು</string>
+    <string name="label_normal">ಸಾಮಾನ್ಯ</string>
+    <string name="label_abnormal">ಅಸಾಮಾನ್ಯ</string>
+    <string name="label_today">ಇಂದು</string>
+    <string name="label_recent_scans">ಇತ್ತೀಚಿನ ಸ್ಕ್ಯಾನ್‌ಗಳು</string>
+    <string name="label_view_all">ಎಲ್ಲ ವೀಕ್ಷಿಸಿ</string>
+    <string name="action_start_new_scan">ಹೊಸ ಸ್ಕ್ಯಾನ್ ಆರಂಭಿಸಿ</string>
+    <string name="label_password">ಪಾಸ್‌ವರ್ಡ್</string>
+    <string name="action_login">ಲಾಗಿನ್</string>
+    <string name="action_forgot_password">ಪಾಸ್‌ವರ್ಡ್ ಮರೆತಿದ್ದೀರಾ?</string>
+    <string name="label_full_name">ಪೂರ್ಣ ಹೆಸರು</string>
+    <string name="action_signup">ಸೈನ್ ಅಪ್</string>
+    <string name="action_go_to_dashboard">ಡ್ಯಾಶ್‌ಬೋರ್ಡ್‌ಗೆ ಹೋಗಿ</string>
+    <string name="feature_ai">AI-ಆಧಾರಿತ ರೋಗನಿರ್ಣಯ</string>
+    <string name="feature_realtime">ನೈಜ-ಸಮಯ ಫಲಿತಾಂಶಗಳು</string>
+    <string name="feature_secure">ಸುರಕ್ಷಿತ ರೋಗಿ ದಾಖಲೆಗಳು</string>
+</resources>

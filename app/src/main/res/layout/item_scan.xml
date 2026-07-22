@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="8dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="1dp"
+    app:cardBackgroundColor="?attr/colorSurface"
+    app:strokeColor="?attr/colorOutline"
+    app:strokeWidth="0.5dp"
+    android:stateListAnimator="@anim/card_click_animator"
+    android:clickable="true"
+    android:focusable="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="12dp">
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/thumbnailCard"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/scanThumbnail"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:src="@drawable/logo"
+                tools:ignore="ContentDescription" />
+        </com.google.android.material.card.MaterialCardView>
+
+        <TextView
+            android:id="@+id/patientName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="@string/lbl_john_anderson"
+            android:textAppearance="?attr/textAppearanceTitleSmall"
+            android:textStyle="bold"
+            android:textColor="?attr/colorOnSurface"
+            app:layout_constraintEnd_toStartOf="@id/resultBadge"
+            app:layout_constraintStart_toEndOf="@id/thumbnailCard"
+            app:layout_constraintTop_toTopOf="@id/thumbnailCard" />
+
+        <TextView
+            android:id="@+id/patientId"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="ID: --"
+            android:textAppearance="?attr/textAppearanceLabelSmall"
+            android:textColor="?attr/colorPrimary"
+            app:layout_constraintEnd_toEndOf="@id/patientName"
+            app:layout_constraintStart_toStartOf="@id/patientName"
+            app:layout_constraintTop_toBottomOf="@id/patientName" />
+
+        <TextView
+            android:id="@+id/scanDate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/lbl_apr_25_2026_1030_am"
+            android:textAppearance="?attr/textAppearanceBodySmall"
+            android:textColor="?attr/colorOnSurfaceVariant"
+            app:layout_constraintEnd_toEndOf="@id/patientName"
+            app:layout_constraintStart_toStartOf="@id/patientName"
+            app:layout_constraintTop_toBottomOf="@id/patientId" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/resultBadge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/resultStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="4dp"
+                android:text="@string/label_normal"
+                android:textAppearance="?attr/textAppearanceLabelMedium"
+                android:textStyle="bold"
+                tools:background="#E8F5E9"
+                tools:textColor="#2E7D32" />
+        </com.google.android.material.card.MaterialCardView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>

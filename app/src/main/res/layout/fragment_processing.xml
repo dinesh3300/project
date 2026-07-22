@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:fitsSystemWindows="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="24dp">
+
+        <!-- Central Animation Area -->
+        <FrameLayout
+            android:id="@+id/progressWrapper"
+            android:layout_width="320dp"
+            android:layout_height="320dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/stageText"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintVertical_chainStyle="packed">
+
+            <!-- Outer rotating arc ring (CSS-style spin) -->
+            <View
+                android:id="@+id/spinRingOuter"
+                android:layout_width="300dp"
+                android:layout_height="300dp"
+                android:layout_gravity="center"
+                android:background="@drawable/circular_progress"
+                android:alpha="0.4"/>
+
+            <!-- Pulsing Glow Ring 1 -->
+            <View
+                android:id="@+id/glowRingOuter"
+                android:layout_width="260dp"
+                android:layout_height="260dp"
+                android:layout_gravity="center"
+                android:background="@drawable/circle_background"
+                android:backgroundTint="#261565C0"/>
+
+            <!-- Pulsing Glow Ring 2 -->
+            <View
+                android:id="@+id/glowRingInner"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_gravity="center"
+                android:background="@drawable/circle_background"
+                android:backgroundTint="#3D1565C0"/>
+
+            <!-- Circular Progress Arc -->
+            <ProgressBar
+                android:id="@+id/progressBar"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="280dp"
+                android:layout_height="280dp"
+                android:layout_gravity="center"
+                android:progressDrawable="@drawable/circular_progress"
+                android:indeterminate="false"
+                android:progress="0"
+                android:max="100"/>
+
+            <!-- Centered Logo Card -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/logoCard"
+                android:layout_width="140dp"
+                android:layout_height="140dp"
+                android:layout_gravity="center"
+                app:cardCornerRadius="70dp"
+                app:cardElevation="16dp"
+                app:cardBackgroundColor="@color/white">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:padding="16dp"
+                        android:src="@drawable/logo"
+                        android:scaleType="fitCenter"
+                        android:contentDescription="TumorScan Logo"/>
+
+                    <!-- Animated laser scanner line -->
+                    <View
+                        android:id="@+id/scannerLine"
+                        android:layout_width="match_parent"
+                        android:layout_height="3dp"
+                        android:background="@drawable/laser_line"
+                        android:layout_gravity="top"/>
+                </FrameLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Progress % Text at bottom of circle -->
+            <TextView
+                android:id="@+id/progressText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal|bottom"
+                android:layout_marginBottom="28dp"
+                android:text="0%"
+                android:textSize="28sp"
+                android:textStyle="bold"
+                android:textColor="@color/primary"/>
+
+        </FrameLayout>
+
+        <!-- Status label: "Deep learning model inference..." -->
+        <TextView
+            android:id="@+id/stageText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/processing_analyzing"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/text_primary"
+            android:layout_marginTop="28dp"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintTop_toBottomOf="@id/progressWrapper"
+            app:layout_constraintBottom_toTopOf="@id/stageSubText"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"/>
+
+        <!-- Stage description sub-label -->
+        <TextView
+            android:id="@+id/stageSubText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/processing_running_models"
+            android:textSize="14sp"
+            android:textColor="@color/text_secondary"
+            android:gravity="center"
+            android:layout_marginBottom="20dp"
+            app:layout_constraintTop_toBottomOf="@id/stageText"
+            app:layout_constraintBottom_toTopOf="@id/detailsCard"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"/>
+
+        <!-- Details / Steps Card -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/detailsCard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="@dimen/card_elevation"
+            app:cardBackgroundColor="@color/surface"
+            app:layout_constraintTop_toBottomOf="@id/stageSubText"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent">
+
+            <LinearLayout
+                android:id="@+id/detailsContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="20dp"/>
+        </com.google.android.material.card.MaterialCardView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

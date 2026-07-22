@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Selected state: deep medical blue -->
+    <item android:color="#1565C0" android:state_checked="true"/>
+    <!-- Unselected: slate gray -->
+    <item android:color="#78909C"/>
+</selector>

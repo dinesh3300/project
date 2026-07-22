@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingTop="@dimen/spacing_small"
+    android:paddingBottom="@dimen/spacing_small">
+
+    <!-- Timeline Indicator -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
+
+        <FrameLayout
+            android:layout_width="48dp"
+            android:layout_height="48dp">
+
+            <View
+                android:id="@+id/timelineIconBackground"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/circle_background"
+                android:backgroundTint="@color/success_green_10"/>
+
+            <ImageView
+                android:id="@+id/timelineIcon"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_check_circle"
+                android:layout_gravity="center"
+                app:tint="@color/success_green"/>
+        </FrameLayout>
+
+        <View
+            android:id="@+id/timelineLine"
+            android:layout_width="2dp"
+            android:layout_height="match_parent"
+            android:background="@color/border_color"
+            android:layout_marginTop="4dp"/>
+    </LinearLayout>
+
+    <!-- Scan Card -->
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        style="@style/AppCard"
+        android:layout_marginStart="@dimen/spacing_normal">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/spacing_normal">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/scanDateTimeText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/lbl_str_20260425_1030_am"
+                        android:textSize="@dimen/text_body_medium"
+                        android:textStyle="bold"/>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="@dimen/spacing_small">
+
+                        <TextView
+                            android:id="@+id/resultBadge"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/label_normal"
+                            android:textSize="@dimen/text_label_small"
+                            android:textColor="@color/success_green"
+                            android:background="@drawable/badge_success"
+                            android:paddingStart="@dimen/spacing_small"
+                            android:paddingEnd="@dimen/spacing_small"
+                            android:paddingTop="4dp"
+                            android:paddingBottom="4dp"/>
+
+                        <TextView
+                            android:id="@+id/riskBadge"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/label_low_risk"
+                            android:textSize="@dimen/text_label_small"
+                            android:textColor="@color/success_green"
+                            android:background="@drawable/badge_success"
+                            android:paddingStart="@dimen/spacing_small"
+                            android:paddingEnd="@dimen/spacing_small"
+                            android:paddingTop="4dp"
+                            android:paddingBottom="4dp"
+                            android:layout_marginStart="@dimen/spacing_small"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/scanThumbnail"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:scaleType="centerCrop"
+                    android:background="@color/bg_light"
+                    android:src="@drawable/ic_upload"
+                    app:tint="@color/text_secondary"
+                    android:padding="8dp"/>
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/viewDetailsButton"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:text="@string/action_view_details"
+                style="@style/SecondaryButton"
+                android:minHeight="0dp"
+                android:layout_marginTop="@dimen/spacing_small"/>
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+</LinearLayout>

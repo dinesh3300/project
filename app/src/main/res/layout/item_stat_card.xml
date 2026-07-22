@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    style="@style/AppCard"
+    android:layout_margin="@dimen/spacing_small">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/spacing_small">
+
+        <FrameLayout
+            android:layout_width="40dp"
+            android:layout_height="40dp">
+
+            <View
+                android:id="@+id/iconBackground"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/circle_background"/>
+
+            <ImageView
+                android:id="@+id/iconImage"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center"
+                android:contentDescription="Stat Icon"/>
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/labelText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/label_total_scans"
+            android:textSize="@dimen/text_body_medium"
+            android:textColor="@color/text_secondary"
+            android:layout_marginTop="@dimen/spacing_medium"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/spacing_tiny">
+
+            <TextView
+                android:id="@+id/valueText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="124"
+                android:textSize="@dimen/text_headline_medium"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/trendText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="+12%"
+                android:textSize="@dimen/text_label_small"
+                android:textColor="@color/success_green"
+                android:drawableStart="@drawable/ic_trending_up"
+                android:drawablePadding="2dp"
+                android:gravity="center_vertical"/>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/subtextText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_label_small"
+            android:textColor="@color/text_secondary"
+            android:layout_marginTop="@dimen/spacing_tiny"/>
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

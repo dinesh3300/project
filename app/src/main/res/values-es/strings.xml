@@ -1,0 +1,84 @@
+<resources>
+    <string name="app_name">Nuerocheck</string>
+    <string name="reset_password_header">Asegure su Cuenta</string>
+    <string name="reset_password_subtitle">Proporcione sus datos a continuación para restablecer su contraseña y recuperar el acceso a su panel médico.</string>
+    <string name="label_username_email">Nombre de usuario o Correo electrónico</string>
+    <string name="label_new_password">Nueva contraseña</string>
+    <string name="label_confirm_password">Confirmar nueva contraseña</string>
+    <string name="action_update_password">Actualizar contraseña</string>
+    <string name="action_back_to_login">Volver al inicio de sesión</string>
+    <string name="critical_cases_pending">2 Casos Críticos Pendientes</string>
+    <string name="immediate_review">Revisión inmediata requerida</string>
+    <string name="label_view">VER</string>
+    <string name="label_total_scans">Total de Escaneos</string>
+    <string name="label_normal">Normal</string>
+    <string name="label_abnormal">Anormal</string>
+    <string name="label_today">Hoy</string>
+    <string name="label_recent_scans">Escaneos Recientes</string>
+    <string name="label_view_all">Ver Todo</string>
+    <string name="action_start_new_scan">Iniciar Nuevo Escaneo</string>
+    <string name="welcome_doctor">Bienvenido, Dr. Smith</string>
+    <string name="welcome_subtitle">Está listo para ayudar a los pacientes con diagnósticos avanzados de IA.</string>
+    <string name="feature_ai">Diagnóstico por IA</string>
+    <string name="feature_realtime">Resultados en Tiempo Real</string>
+    <string name="feature_secure">Registros de Pacientes Seguros</string>
+    <string name="title_app">Nuerocheck</string>
+    <string name="label_password">Contraseña</string>
+    <string name="action_login">Iniciar Sesión</string>
+    <string name="label_remember_me">Recordarme</string>
+    <string name="action_forgot_password">¿Olvidó su contraseña?</string>
+    <string name="label_no_account">¿No tiene una cuenta? Regístrese</string>
+    <string name="label_privacy_terms">Política de Privacidad | Términos de Servicio</string>
+    <string name="label_full_name">Nombre Completo</string>
+    <string name="label_confirm_password_simple">Confirmar Contraseña</string>
+    <string name="action_signup">Registrarse</string>
+    <string name="label_already_have_account">¿Ya tiene una cuenta? Iniciar Sesión</string>
+    <string name="helper_username_email">Ingrese el correo electrónico o nombre de usuario asociado con su cuenta</string>
+    <string name="greeting_doctor">Buenos días, Dr. Smith</string>
+    <string name="action_go_to_dashboard">Ir al Panel</string>
+    <string name="content_desc_profile">Perfil</string>
+
+    <!-- Extra Profile Fields -->
+    <string name="label_hospital">Hospital / Institución</string>
+    <string name="label_license">Licencia Médica No.</string>
+    <string name="label_years_exp">Años de Experiencia</string>
+    <string name="hint_hospital">ej. Hospitales Apollo</string>
+    <string name="hint_license">ej. MCI-2024-00234</string>
+    <string name="hint_years_exp">ej. 8</string>
+
+    <!-- Settings Labels -->
+    <string name="label_change_password">Cambiar Contraseña</string>
+    <string name="label_language">Idioma</string>
+    <string name="label_dark_mode">Modo Oscuro</string>
+    <string name="label_logout">Cerrar Sesión</string>
+    <string name="label_delete_account">Eliminar Cuenta</string>
+    <string name="label_edit_profile">Editar Perfil</string>
+
+    <!-- New Strings from Requirements -->
+    <string name="label_privacy_policy">Política de Privacidad</string>
+    <string name="label_app_info">Información de la Aplicación</string>
+    <string name="label_faqs">Preguntas Frecuentes (FAQs)</string>
+    <string name="label_terms_conditions">Términos y Condiciones</string>
+    <string name="label_contact_support">Contactar Soporte</string>
+    <string name="label_account_settings">Ajustes de Cuenta</string>
+    <string name="label_app_preferences">PREFERENCIAS DE LA APP</string>
+    <string name="label_account_security">SEGURIDAD DE LA CUENTA</string>
+    <string name="label_more_info">MÁS INFORMACIÓN</string>
+
+    <!-- Bottom Nav Labels -->
+    <string name="nav_dashboard">Panel</string>
+    <string name="nav_scan">Nuevo Escaneo</string>
+    <string name="nav_history">Historial</string>
+    <string name="nav_settings">Ajustes</string>
+
+    <!-- Empty/Error States -->
+    <string name="title_empty_records">No se encontraron registros</string>
+    <string name="msg_empty_records">Sus escaneos analizados aparecerán aquí una vez que inicie un nuevo análisis.</string>
+    <string name="title_error">Algo salió mal</string>
+    <string name="msg_error">No pudimos cargar los registros. Por favor, compruebe su conexión e inténtelo de nuevo.</string>
+    <string name="action_retry">Reintentar</string>
+    <string name="label_patient_info">Información del Paciente</string>
+    <string name="label_analyzed_scan">Escaneo Cerebral Analizado</string>
+    <string name="action_share_report">Compartir Informe de Análisis</string>
+    <string name="label_clinical_findings">Hallazgos Clínicos</string>
+</resources>

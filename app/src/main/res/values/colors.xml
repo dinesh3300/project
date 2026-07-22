@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- ── Material 3 Semantic Colors (Light) ──────────────── -->
+    <color name="primary">#4F46E5</color>
+    <color name="onPrimary">#FFFFFF</color>
+    <color name="primaryContainer">#E0E7FF</color>
+    <color name="onPrimaryContainer">#1E1B4B</color>
+
+    <color name="secondary">#7C3AED</color>
+    <color name="onSecondary">#FFFFFF</color>
+    <color name="secondaryContainer">#F3E8FF</color>
+    <color name="onSecondaryContainer">#4C1D95</color>
+
+    <color name="tertiary">#4F46E5</color>
+    <color name="onTertiary">#FFFFFF</color>
+    <color name="tertiaryContainer">#E0E7FF</color>
+    <color name="onTertiaryContainer">#1E1B4B</color>
+
+    <color name="error">#EF4444</color>
+    <color name="onError">#FFFFFF</color>
+    <color name="errorContainer">#FEE2E2</color>
+    <color name="onErrorContainer">#7F1D1D</color>
+
+    <color name="background">#F8FAFC</color>
+    <color name="onBackground">#0F172A</color>
+    <color name="surface">#FFFFFF</color>
+    <color name="onSurface">#0F172A</color>
+    <color name="surfaceVariant">#F1F5F9</color>
+    <color name="onSurfaceVariant">#475569</color>
+    <color name="outline">#94A3B8</color>
+
+    <!-- ── Glassmorphism / Effects ────────────────────────── -->
+    <color name="glass_white">#B3FFFFFF</color>
+    <color name="glass_primary">#1A4F46E5</color>
+    <color name="shimmer_base">#E2E8F0</color>
+    <color name="shimmer_highlight">#F8FAFC</color>
+
+    <!-- ── Legacy / Compatibility Aliases ─────────────────── -->
+    <color name="medical_blue">#4F46E5</color>
+    <color name="medical_blue_10">#1A4F46E5</color>
+    <color name="primary_light">#EEF2FF</color>
+    <color name="primary_dark">#312E81</color>
+    <color name="success">#10B981</color>
+    <color name="success_light">#D1FAE5</color>
+    <color name="success_green_10">#1A10B981</color>
+    <color name="warning">#F59E0B</color>
+    <color name="warning_light">#FEF3C7</color>
+    <color name="danger_red">#EF4444</color>
+    <color name="danger_red_10">#1AEF4444</color>
+    <color name="divider">#E2E8F0</color>
+    <color name="border">#CBD5E1</color>
+    <color name="border_color">#CBD5E1</color>
+    <color name="text_primary">#0F172A</color>
+    <color name="text_secondary">#475569</color>
+    <color name="text_tertiary">#64748B</color>
+    <color name="neutral_gray">#64748B</color>
+    <color name="success_green">#10B981</color>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="bg_white">#FFFFFF</color>
+    <color name="bg_light">#F8FAFC</color>
+</resources>

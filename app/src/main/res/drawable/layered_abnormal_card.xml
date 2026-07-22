@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Colored Soft Glow Shadow Layer (offset down by 8dp) -->
+    <item android:top="8dp" android:left="6dp" android:right="6dp" android:bottom="0dp">
+        <shape android:shape="rectangle">
+            <gradient
+                android:startColor="#40DC2626"
+                android:endColor="#00000000"
+                android:angle="270" />
+            <corners android:radius="24dp" />
+        </shape>
+    </item>
+    
+    <!-- Main Gradient Card Layer -->
+    <item android:top="0dp" android:left="0dp" android:right="0dp" android:bottom="8dp">
+        <shape android:shape="rectangle">
+            <gradient
+                android:startColor="#F87171"
+                android:endColor="#DC2626"
+                android:angle="135" />
+            <corners android:radius="24dp" />
+        </shape>
+    </item>
+
+    <!-- Overlay Blending Radial Glow (Mesh Effect) -->
+    <item android:top="0dp" android:left="0dp" android:right="0dp" android:bottom="8dp">
+        <shape android:shape="rectangle">
+            <gradient
+                android:type="radial"
+                android:gradientRadius="180dp"
+                android:centerX="0.2"
+                android:centerY="0.2"
+                android:startColor="#33FBBF24"
+                android:endColor="#00000000" />
+            <corners android:radius="24dp" />
+        </shape>
+    </item>
+</layer-list>

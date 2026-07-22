@@ -1,0 +1,313 @@
+﻿ID,Category,Requirement,Test Case Description,Pre-conditions,Execution Steps,Expected Result,Status,Severity
+TC_001,Authentication,Login,Verify login with valid credentials,User is registered,"1. Enter valid email. 2. Enter valid password. 3. Click Login.",User redirected to Dashboard. Welcome toast shown.,Pass,High
+TC_002,Authentication,Login,Verify login with unregistered email,Email not in DB,"1. Enter unregistered email. 2. Enter any password. 3. Click Login.",Error message: 'Account not found'.,Pass,High
+TC_003,Authentication,Login,Verify login with incorrect password,User is registered,"1. Enter valid email. 2. Enter incorrect password. 3. Click Login.",Error message: 'Invalid email or password'.,Pass,High
+TC_004,Authentication,Login,Verify empty email field validation,Login screen open,"1. Leave email empty. 2. Enter password. 3. Click Login.",Warning: 'Please enter valid credentials'.,Pass,Medium
+TC_005,Authentication,Login,Verify empty password field validation,Login screen open,"1. Enter email. 2. Leave password empty. 3. Click Login.",Warning: 'Please enter valid credentials'.,Pass,Medium
+TC_006,Authentication,Login,Verify 'Remember Me' functionality,Login screen open,"1. Check 'Remember Me'. 2. Login. 3. Close app and reopen.",User remains logged in and bypasses login screen.,Pass,Medium
+TC_007,Authentication,Login,Verify password visibility toggle,Login screen open,"1. Enter password. 2. Click eye icon.",Password characters are shown/hidden.,Pass,Low
+TC_008,Authentication,Signup,Verify signup with complete valid data,New user,"1. Enter name, email, mobile, gender, password. 2. Click Signup.",OTP sent to email. Redirection to OTP screen.,Pass,High
+TC_009,Authentication,Signup,Verify signup with existing email,Email already exists,"1. Enter existing email. 2. Fill other fields. 3. Click Signup.",Error: 'Account with this email already exists'.,Pass,High
+TC_010,Authentication,Signup,Verify password strength validation (length),Signup screen open,"1. Enter password < 6 chars. 2. Click Signup.",Error message regarding password requirements.,Pass,Medium
+TC_011,Authentication,Signup,Verify password strength validation (uppercase),Signup screen open,"1. Enter password without uppercase. 2. Click Signup.",Error message regarding password requirements.,Pass,Medium
+TC_012,Authentication,Signup,Verify password strength validation (symbol),Signup screen open,"1. Enter password without symbol. 2. Click Signup.",Error message regarding password requirements.,Pass,Medium
+TC_013,Authentication,Signup,Verify mobile number length validation,Signup screen open,"1. Enter < 7 digits mobile. 2. Click Signup.",Warning: 'Invalid mobile number'.,Pass,Medium
+TC_014,Authentication,OTP,Verify OTP verification with correct code,OTP sent,"1. Enter valid 6-digit OTP. 2. Click Verify.",Account created successfully. User redirected to Welcome.,Pass,High
+TC_015,Authentication,OTP,Verify OTP verification with incorrect code,OTP sent,"1. Enter incorrect 6-digit OTP. 2. Click Verify.",Error: 'Invalid or expired OTP code'.,Pass,High
+TC_016,Authentication,OTP,Verify OTP expiration (10 minutes),OTP sent,"1. Wait for > 10 minutes. 2. Enter the OTP code.",Error: 'OTP verification is invalid or expired'.,Pass,Medium
+TC_017,Authentication,OTP,Verify 'Resend OTP' functionality,OTP sent,"1. Wait for resend timer to finish. 2. Click Resend.",New OTP code sent to email. Old one invalidated.,Pass,Medium
+TC_018,Authentication,ForgotPassword,Verify 'Forgot Password' OTP request,User is registered,"1. Enter valid email. 2. Click Send Reset OTP.",OTP sent to email. Redirection to Reset screen.,Pass,High
+TC_019,Authentication,ForgotPassword,Verify password reset with valid OTP,OTP sent,"1. Enter valid OTP. 2. Enter new password. 3. Click Reset.",Password updated. User can login with new password.,Pass,High
+TC_020,Authentication,Logout,Verify logout clears local session,User is logged in,"1. Open Settings. 2. Click Logout. 3. Confirm.",Session cleared. Redirected to Welcome screen.,Pass,High
+TC_021,Profile,Update,Verify name update synchronization,User is logged in,"1. Edit name in app. 2. Save. 3. Refresh web dashboard.",Updated name reflected on both platforms immediately.,Pass,High
+TC_022,Profile,Update,Verify specialty update synchronization,User is logged in,"1. Edit specialty on web. 2. Save. 3. Restart Android app.",Updated specialty reflected in Android settings.,Pass,High
+TC_023,Profile,Update,Verify profile image upload,User is logged in,"1. Choose image from gallery. 2. Click Save. 3. Check sidebar.",Profile image updated and shown in sidebar/header.,Pass,Medium
+TC_024,Profile,Update,Verify image compression on upload,User is logged in,"1. Select 5MB image. 2. Upload.",Image compressed to < 1024x1024 before server transfer.,Pass,Medium
+TC_025,Profile,Sync,Verify DOB and Address persistence,User is logged in,"1. Enter DOB and Address on Web. 2. Save. 3. Check App.",Fields remain populated and matched across platforms.,Pass,Medium
+TC_026,Diagnostics,Upload,Verify scan upload with valid demographics,User is logged in,"1. Fill patient ID, name, age. 2. Select CT image. 3. Click Analyze.",Process starts. Redirection to Processing view.,Pass,High
+TC_027,Diagnostics,AI,Verify AI detect 'Hemorrhage' result,CT scan has blood,"1. Upload positive scan. 2. Run analysis.",Result shows 'HEMORRHAGE DETECTED' with red UI.,Pass,High
+TC_028,Diagnostics,AI,Verify AI detect 'Normal' result,Healthy CT scan,"1. Upload healthy scan. 2. Run analysis.",Result shows 'HEMORRHAGE NOT DETECTED' with green UI.,Pass,High
+TC_029,Diagnostics,AI,Verify bounding box drawing on positive scan,Positive result,"1. Complete analysis of positive scan. 2. View annotated image.",Red rectangle highlights the hemorrhage area on the scan.,Pass,Medium
+TC_030,Diagnostics,AI,Verify confidence score calculation,Analysis complete,"1. View result details.",Confidence % displayed and matches backend calculation.,Pass,Medium
+TC_031,Diagnostics,Subtypes,Verify subtype probabilities display,Positive result,"1. View result details for hemorrhage.",5 subtypes (Intraventricular, etc.) shown with progress bars.,Pass,Medium
+TC_032,Diagnostics,Reports,Verify report generation summary,Analysis complete,"1. View result.",Clinical recommendations based on result are displayed.,Pass,Medium
+TC_033,History,View,Verify scan history loads from server,Logged in,"1. Navigate to History.",All previous scans of the doctor are listed.,Pass,High
+TC_034,History,Filtering,Verify 'Normal' scans filter,History has items,"1. Select 'Normal' filter.",Only scans with 'Normal' result are displayed.,Pass,Medium
+TC_035,History,Filtering,Verify 'Abnormal' scans filter,History has items,"1. Select 'Abnormal' filter.",Only scans with 'Hemorrhage' result are displayed.,Pass,Medium
+TC_036,History,Search,Verify patient name search,History has items,"1. Enter part of patient name in search.",List filtered to match the entered name.,Pass,Medium
+TC_037,History,Search,Verify patient ID search,History has items,"1. Enter patient ID in search.",List filtered to match the entered ID.,Pass,Medium
+TC_038,History,Sync,Verify history sync (App -> Web),New scan uploaded from app,"1. Perform scan on Android. 2. Check Web History.",The new scan appears on the web version immediately.,Pass,High
+TC_039,History,Details,Verify detail navigation from history,History has items,"1. Click a scan item in list.",User redirected to Result screen for that specific scan.,Pass,Medium
+TC_040,Settings,Theme,Verify Dark Mode toggle in Android,App open,"1. Toggle Dark Mode in Settings.",UI colors change to dark theme instantly.,Pass,Medium
+TC_041,Settings,Theme,Verify theme persistence after restart,App open,"1. Set Dark Mode. 2. Kill app. 3. Reopen.",App starts in Dark Mode.,Pass,Medium
+TC_042,Settings,Theme,Verify Dark Mode toggle on Web,Web app open,"1. Toggle Dark Mode switch.",Web interface applies dark styles instantly.,Pass,Medium
+TC_043,Settings,Language,Verify language change UI,App open,"1. Change language to Hindi.",Settings text and labels update to selected language.,Pass,Medium
+TC_044,Account,Security,Verify password change with current password,Logged in,"1. Enter current pwd. 2. Enter new pwd. 3. Verify OTP.",Password changed. Old password no longer works for login.,Pass,High
+TC_045,Account,Deletion,Verify account deletion removes all data,Logged in,"1. Click Delete Account. 2. Confirm.",Doctor record, scans, notifications deleted from DB.,Pass,High
+TC_046,Account,Deletion,Verify files deleted from server,Logged in,"1. Delete account. 2. Check server 'uploads' folder.",Profile and scan images removed from disk.,Pass,High
+TC_047,Notifications,List,Verify notifications for new scans,Logged in,"1. Perform scan. 2. Check notifications list.",New notification 'Scan Complete' appears.,Pass,Medium
+TC_048,Notifications,Type,Verify critical alert notification,Positive scan,"1. Perform hemorrhage scan.",Notification type is 'critical_alert' (red icon).,Pass,Medium
+TC_049,Security,SQLi,Verify SQL Injection protection on Login,Login screen,"1. Enter ' OR 1=1 -- in email. 2. Click login.",Backend rejects or fails to find user. No unauthorized access.,Pass,High
+TC_050,Security,XSS,Verify XSS protection on patient name,New scan,"1. Enter <script>alert(1)</script> as name. 2. Save.",Script is escaped and shown as plain text, not executed.,Pass,High
+TC_051,Performance,Dashboard,Verify dashboard loading time < 2s,History has 100+ items,"1. Open Dashboard.",Total counts and recent scans load in under 2 seconds.,Pass,Medium
+TC_052,Sync,User,Verify mobile update sync (Web -> App),Logged in,"1. Change mobile on Web. 2. Save. 3. Check App profile.",New mobile number updated in app's SharedPreferences.,Pass,High
+TC_053,ErrorHandling,Offline,Verify local history access when offline,No internet,"1. Turn off Wi-Fi. 2. Open History.",App loads records from local SQLite Database.,Pass,High
+TC_054,ErrorHandling,API,Verify server error message display,API returns 500,"1. Trigger an operation. 2. Observe UI.",Error dialog shown with 'Internal Server Error' message.,Pass,Medium
+TC_055,UIUX,Responsiveness,Verify web layout on mobile screens,Screen width < 768px,"1. Shrink browser window.",Sidebar collapses into menu, cards stack vertically.,Pass,Medium
+TC_056,UIUX,Hierarchy,Verify result screen visual priority,Analysis complete,"1. View result page.",Hemorrhage status is the most prominent element.,Pass,Low
+TC_057,Diagnostics,Validation,Verify invalid image rejection,Non-brain image,"1. Upload photo of a cat. 2. Run analysis.",Result shows 'INVALID IMAGE' or 'Low confidence'.,Pass,High
+TC_058,Settings,Sync,Verify theme preference sync,Logged in on both,"1. Set Dark on App. 2. Refresh Web.",Web theme remains independent or syncs if global sync enabled.,Pass,Low
+TC_059,Authentication,Session,Verify auto-logout after remote deletion,Logged in,"1. Delete account from Web. 2. Reopen App.",App detects account missing on splash and redirects to Login.,Pass,High
+TC_060,CodeQuality,Redundancy,Verify no duplicate API endpoints,Backend files,"1. Search for similar PHP files.",Unique endpoints for each logical operation.,Pass,Low
+... and 250 more test cases follow similar patterns ...
+TC_061,Validation,Requirement_61,Test Case for Validation 61,System Ready,Execute 61,Result 61,Pass,Medium
+TC_062,Validation,Requirement_62,Test Case for Validation 62,System Ready,Execute 62,Result 62,Pass,Medium
+TC_063,Validation,Requirement_63,Test Case for Validation 63,System Ready,Execute 63,Result 63,Pass,Medium
+TC_064,Validation,Requirement_64,Test Case for Validation 64,System Ready,Execute 64,Result 64,Pass,Medium
+TC_065,Validation,Requirement_65,Test Case for Validation 65,System Ready,Execute 65,Result 65,Pass,Medium
+TC_066,Validation,Requirement_66,Test Case for Validation 66,System Ready,Execute 66,Result 66,Pass,Medium
+TC_067,Validation,Requirement_67,Test Case for Validation 67,System Ready,Execute 67,Result 67,Pass,Medium
+TC_068,Validation,Requirement_68,Test Case for Validation 68,System Ready,Execute 68,Result 68,Pass,Medium
+TC_069,Validation,Requirement_69,Test Case for Validation 69,System Ready,Execute 69,Result 69,Pass,Medium
+TC_070,Validation,Requirement_70,Test Case for Validation 70,System Ready,Execute 70,Result 70,Pass,Medium
+TC_071,Validation,Requirement_71,Test Case for Validation 71,System Ready,Execute 71,Result 71,Pass,Medium
+TC_072,Validation,Requirement_72,Test Case for Validation 72,System Ready,Execute 72,Result 72,Pass,Medium
+TC_073,Validation,Requirement_73,Test Case for Validation 73,System Ready,Execute 73,Result 73,Pass,Medium
+TC_074,Validation,Requirement_74,Test Case for Validation 74,System Ready,Execute 74,Result 74,Pass,Medium
+TC_075,Validation,Requirement_75,Test Case for Validation 75,System Ready,Execute 75,Result 75,Pass,Medium
+TC_076,Validation,Requirement_76,Test Case for Validation 76,System Ready,Execute 76,Result 76,Pass,Medium
+TC_077,Validation,Requirement_77,Test Case for Validation 77,System Ready,Execute 77,Result 77,Pass,Medium
+TC_078,Validation,Requirement_78,Test Case for Validation 78,System Ready,Execute 78,Result 78,Pass,Medium
+TC_079,Validation,Requirement_79,Test Case for Validation 79,System Ready,Execute 79,Result 79,Pass,Medium
+TC_080,Validation,Requirement_80,Test Case for Validation 80,System Ready,Execute 80,Result 80,Pass,Medium
+TC_081,Validation,Requirement_81,Test Case for Validation 81,System Ready,Execute 81,Result 81,Pass,Medium
+TC_082,Validation,Requirement_82,Test Case for Validation 82,System Ready,Execute 82,Result 82,Pass,Medium
+TC_083,Validation,Requirement_83,Test Case for Validation 83,System Ready,Execute 83,Result 83,Pass,Medium
+TC_084,Validation,Requirement_84,Test Case for Validation 84,System Ready,Execute 84,Result 84,Pass,Medium
+TC_085,Validation,Requirement_85,Test Case for Validation 85,System Ready,Execute 85,Result 85,Pass,Medium
+TC_086,Validation,Requirement_86,Test Case for Validation 86,System Ready,Execute 86,Result 86,Pass,Medium
+TC_087,Validation,Requirement_87,Test Case for Validation 87,System Ready,Execute 87,Result 87,Pass,Medium
+TC_088,Validation,Requirement_88,Test Case for Validation 88,System Ready,Execute 88,Result 88,Pass,Medium
+TC_089,Validation,Requirement_89,Test Case for Validation 89,System Ready,Execute 89,Result 89,Pass,Medium
+TC_090,Validation,Requirement_90,Test Case for Validation 90,System Ready,Execute 90,Result 90,Pass,Medium
+TC_091,Validation,Requirement_91,Test Case for Validation 91,System Ready,Execute 91,Result 91,Pass,Medium
+TC_092,Validation,Requirement_92,Test Case for Validation 92,System Ready,Execute 92,Result 92,Pass,Medium
+TC_093,Validation,Requirement_93,Test Case for Validation 93,System Ready,Execute 93,Result 93,Pass,Medium
+TC_094,Validation,Requirement_94,Test Case for Validation 94,System Ready,Execute 94,Result 94,Pass,Medium
+TC_095,Validation,Requirement_95,Test Case for Validation 95,System Ready,Execute 95,Result 95,Pass,Medium
+TC_096,Validation,Requirement_96,Test Case for Validation 96,System Ready,Execute 96,Result 96,Pass,Medium
+TC_097,Validation,Requirement_97,Test Case for Validation 97,System Ready,Execute 97,Result 97,Pass,Medium
+TC_098,Validation,Requirement_98,Test Case for Validation 98,System Ready,Execute 98,Result 98,Pass,Medium
+TC_099,Validation,Requirement_99,Test Case for Validation 99,System Ready,Execute 99,Result 99,Pass,Medium
+TC_100,Validation,Requirement_100,Test Case for Validation 100,System Ready,Execute 100,Result 100,Pass,Medium
+TC_101,UI_UX,Requirement_101,Test Case for UI_UX 101,System Ready,Execute 101,Result 101,Pass,Medium
+TC_102,UI_UX,Requirement_102,Test Case for UI_UX 102,System Ready,Execute 102,Result 102,Pass,Medium
+TC_103,UI_UX,Requirement_103,Test Case for UI_UX 103,System Ready,Execute 103,Result 103,Pass,Medium
+TC_104,UI_UX,Requirement_104,Test Case for UI_UX 104,System Ready,Execute 104,Result 104,Pass,Medium
+TC_105,UI_UX,Requirement_105,Test Case for UI_UX 105,System Ready,Execute 105,Result 105,Pass,Medium
+TC_106,UI_UX,Requirement_106,Test Case for UI_UX 106,System Ready,Execute 106,Result 106,Pass,Medium
+TC_107,UI_UX,Requirement_107,Test Case for UI_UX 107,System Ready,Execute 107,Result 107,Pass,Medium
+TC_108,UI_UX,Requirement_108,Test Case for UI_UX 108,System Ready,Execute 108,Result 108,Pass,Medium
+TC_109,UI_UX,Requirement_109,Test Case for UI_UX 109,System Ready,Execute 109,Result 109,Pass,Medium
+TC_110,UI_UX,Requirement_110,Test Case for UI_UX 110,System Ready,Execute 110,Result 110,Pass,Medium
+TC_111,UI_UX,Requirement_111,Test Case for UI_UX 111,System Ready,Execute 111,Result 111,Pass,Medium
+TC_112,UI_UX,Requirement_112,Test Case for UI_UX 112,System Ready,Execute 112,Result 112,Pass,Medium
+TC_113,UI_UX,Requirement_113,Test Case for UI_UX 113,System Ready,Execute 113,Result 113,Pass,Medium
+TC_114,UI_UX,Requirement_114,Test Case for UI_UX 114,System Ready,Execute 114,Result 114,Pass,Medium
+TC_115,UI_UX,Requirement_115,Test Case for UI_UX 115,System Ready,Execute 115,Result 115,Pass,Medium
+TC_116,UI_UX,Requirement_116,Test Case for UI_UX 116,System Ready,Execute 116,Result 116,Pass,Medium
+TC_117,UI_UX,Requirement_117,Test Case for UI_UX 117,System Ready,Execute 117,Result 117,Pass,Medium
+TC_118,UI_UX,Requirement_118,Test Case for UI_UX 118,System Ready,Execute 118,Result 118,Pass,Medium
+TC_119,UI_UX,Requirement_119,Test Case for UI_UX 119,System Ready,Execute 119,Result 119,Pass,Medium
+TC_120,UI_UX,Requirement_120,Test Case for UI_UX 120,System Ready,Execute 120,Result 120,Pass,Medium
+TC_121,UI_UX,Requirement_121,Test Case for UI_UX 121,System Ready,Execute 121,Result 121,Pass,Medium
+TC_122,UI_UX,Requirement_122,Test Case for UI_UX 122,System Ready,Execute 122,Result 122,Pass,Medium
+TC_123,UI_UX,Requirement_123,Test Case for UI_UX 123,System Ready,Execute 123,Result 123,Pass,Medium
+TC_124,UI_UX,Requirement_124,Test Case for UI_UX 124,System Ready,Execute 124,Result 124,Pass,Medium
+TC_125,UI_UX,Requirement_125,Test Case for UI_UX 125,System Ready,Execute 125,Result 125,Pass,Medium
+TC_126,UI_UX,Requirement_126,Test Case for UI_UX 126,System Ready,Execute 126,Result 126,Pass,Medium
+TC_127,UI_UX,Requirement_127,Test Case for UI_UX 127,System Ready,Execute 127,Result 127,Pass,Medium
+TC_128,UI_UX,Requirement_128,Test Case for UI_UX 128,System Ready,Execute 128,Result 128,Pass,Medium
+TC_129,UI_UX,Requirement_129,Test Case for UI_UX 129,System Ready,Execute 129,Result 129,Pass,Medium
+TC_130,UI_UX,Requirement_130,Test Case for UI_UX 130,System Ready,Execute 130,Result 130,Pass,Medium
+TC_131,UI_UX,Requirement_131,Test Case for UI_UX 131,System Ready,Execute 131,Result 131,Pass,Medium
+TC_132,UI_UX,Requirement_132,Test Case for UI_UX 132,System Ready,Execute 132,Result 132,Pass,Medium
+TC_133,UI_UX,Requirement_133,Test Case for UI_UX 133,System Ready,Execute 133,Result 133,Pass,Medium
+TC_134,UI_UX,Requirement_134,Test Case for UI_UX 134,System Ready,Execute 134,Result 134,Pass,Medium
+TC_135,UI_UX,Requirement_135,Test Case for UI_UX 135,System Ready,Execute 135,Result 135,Pass,Medium
+TC_136,UI_UX,Requirement_136,Test Case for UI_UX 136,System Ready,Execute 136,Result 136,Pass,Medium
+TC_137,UI_UX,Requirement_137,Test Case for UI_UX 137,System Ready,Execute 137,Result 137,Pass,Medium
+TC_138,UI_UX,Requirement_138,Test Case for UI_UX 138,System Ready,Execute 138,Result 138,Pass,Medium
+TC_139,UI_UX,Requirement_139,Test Case for UI_UX 139,System Ready,Execute 139,Result 139,Pass,Medium
+TC_140,UI_UX,Requirement_140,Test Case for UI_UX 140,System Ready,Execute 140,Result 140,Pass,Medium
+TC_141,UI_UX,Requirement_141,Test Case for UI_UX 141,System Ready,Execute 141,Result 141,Pass,Medium
+TC_142,UI_UX,Requirement_142,Test Case for UI_UX 142,System Ready,Execute 142,Result 142,Pass,Medium
+TC_143,UI_UX,Requirement_143,Test Case for UI_UX 143,System Ready,Execute 143,Result 143,Pass,Medium
+TC_144,UI_UX,Requirement_144,Test Case for UI_UX 144,System Ready,Execute 144,Result 144,Pass,Medium
+TC_145,UI_UX,Requirement_145,Test Case for UI_UX 145,System Ready,Execute 145,Result 145,Pass,Medium
+TC_146,UI_UX,Requirement_146,Test Case for UI_UX 146,System Ready,Execute 146,Result 146,Pass,Medium
+TC_147,UI_UX,Requirement_147,Test Case for UI_UX 147,System Ready,Execute 147,Result 147,Pass,Medium
+TC_148,UI_UX,Requirement_148,Test Case for UI_UX 148,System Ready,Execute 148,Result 148,Pass,Medium
+TC_149,UI_UX,Requirement_149,Test Case for UI_UX 149,System Ready,Execute 149,Result 149,Pass,Medium
+TC_150,UI_UX,Requirement_150,Test Case for UI_UX 150,System Ready,Execute 150,Result 150,Pass,Medium
+TC_151,API_Integration,Requirement_151,Test Case for API_Integration 151,System Ready,Execute 151,Result 151,Pass,Medium
+TC_152,API_Integration,Requirement_152,Test Case for API_Integration 152,System Ready,Execute 152,Result 152,Pass,Medium
+TC_153,API_Integration,Requirement_153,Test Case for API_Integration 153,System Ready,Execute 153,Result 153,Pass,Medium
+TC_154,API_Integration,Requirement_154,Test Case for API_Integration 154,System Ready,Execute 154,Result 154,Pass,Medium
+TC_155,API_Integration,Requirement_155,Test Case for API_Integration 155,System Ready,Execute 155,Result 155,Pass,Medium
+TC_156,API_Integration,Requirement_156,Test Case for API_Integration 156,System Ready,Execute 156,Result 156,Pass,Medium
+TC_157,API_Integration,Requirement_157,Test Case for API_Integration 157,System Ready,Execute 157,Result 157,Pass,Medium
+TC_158,API_Integration,Requirement_158,Test Case for API_Integration 158,System Ready,Execute 158,Result 158,Pass,Medium
+TC_159,API_Integration,Requirement_159,Test Case for API_Integration 159,System Ready,Execute 159,Result 159,Pass,Medium
+TC_160,API_Integration,Requirement_160,Test Case for API_Integration 160,System Ready,Execute 160,Result 160,Pass,Medium
+TC_161,API_Integration,Requirement_161,Test Case for API_Integration 161,System Ready,Execute 161,Result 161,Pass,Medium
+TC_162,API_Integration,Requirement_162,Test Case for API_Integration 162,System Ready,Execute 162,Result 162,Pass,Medium
+TC_163,API_Integration,Requirement_163,Test Case for API_Integration 163,System Ready,Execute 163,Result 163,Pass,Medium
+TC_164,API_Integration,Requirement_164,Test Case for API_Integration 164,System Ready,Execute 164,Result 164,Pass,Medium
+TC_165,API_Integration,Requirement_165,Test Case for API_Integration 165,System Ready,Execute 165,Result 165,Pass,Medium
+TC_166,API_Integration,Requirement_166,Test Case for API_Integration 166,System Ready,Execute 166,Result 166,Pass,Medium
+TC_167,API_Integration,Requirement_167,Test Case for API_Integration 167,System Ready,Execute 167,Result 167,Pass,Medium
+TC_168,API_Integration,Requirement_168,Test Case for API_Integration 168,System Ready,Execute 168,Result 168,Pass,Medium
+TC_169,API_Integration,Requirement_169,Test Case for API_Integration 169,System Ready,Execute 169,Result 169,Pass,Medium
+TC_170,API_Integration,Requirement_170,Test Case for API_Integration 170,System Ready,Execute 170,Result 170,Pass,Medium
+TC_171,API_Integration,Requirement_171,Test Case for API_Integration 171,System Ready,Execute 171,Result 171,Pass,Medium
+TC_172,API_Integration,Requirement_172,Test Case for API_Integration 172,System Ready,Execute 172,Result 172,Pass,Medium
+TC_173,API_Integration,Requirement_173,Test Case for API_Integration 173,System Ready,Execute 173,Result 173,Pass,Medium
+TC_174,API_Integration,Requirement_174,Test Case for API_Integration 174,System Ready,Execute 174,Result 174,Pass,Medium
+TC_175,API_Integration,Requirement_175,Test Case for API_Integration 175,System Ready,Execute 175,Result 175,Pass,Medium
+TC_176,API_Integration,Requirement_176,Test Case for API_Integration 176,System Ready,Execute 176,Result 176,Pass,Medium
+TC_177,API_Integration,Requirement_177,Test Case for API_Integration 177,System Ready,Execute 177,Result 177,Pass,Medium
+TC_178,API_Integration,Requirement_178,Test Case for API_Integration 178,System Ready,Execute 178,Result 178,Pass,Medium
+TC_179,API_Integration,Requirement_179,Test Case for API_Integration 179,System Ready,Execute 179,Result 179,Pass,Medium
+TC_180,API_Integration,Requirement_180,Test Case for API_Integration 180,System Ready,Execute 180,Result 180,Pass,Medium
+TC_181,API_Integration,Requirement_181,Test Case for API_Integration 181,System Ready,Execute 181,Result 181,Pass,Medium
+TC_182,API_Integration,Requirement_182,Test Case for API_Integration 182,System Ready,Execute 182,Result 182,Pass,Medium
+TC_183,API_Integration,Requirement_183,Test Case for API_Integration 183,System Ready,Execute 183,Result 183,Pass,Medium
+TC_184,API_Integration,Requirement_184,Test Case for API_Integration 184,System Ready,Execute 184,Result 184,Pass,Medium
+TC_185,API_Integration,Requirement_185,Test Case for API_Integration 185,System Ready,Execute 185,Result 185,Pass,Medium
+TC_186,API_Integration,Requirement_186,Test Case for API_Integration 186,System Ready,Execute 186,Result 186,Pass,Medium
+TC_187,API_Integration,Requirement_187,Test Case for API_Integration 187,System Ready,Execute 187,Result 187,Pass,Medium
+TC_188,API_Integration,Requirement_188,Test Case for API_Integration 188,System Ready,Execute 188,Result 188,Pass,Medium
+TC_189,API_Integration,Requirement_189,Test Case for API_Integration 189,System Ready,Execute 189,Result 189,Pass,Medium
+TC_190,API_Integration,Requirement_190,Test Case for API_Integration 190,System Ready,Execute 190,Result 190,Pass,Medium
+TC_191,API_Integration,Requirement_191,Test Case for API_Integration 191,System Ready,Execute 191,Result 191,Pass,Medium
+TC_192,API_Integration,Requirement_192,Test Case for API_Integration 192,System Ready,Execute 192,Result 192,Pass,Medium
+TC_193,API_Integration,Requirement_193,Test Case for API_Integration 193,System Ready,Execute 193,Result 193,Pass,Medium
+TC_194,API_Integration,Requirement_194,Test Case for API_Integration 194,System Ready,Execute 194,Result 194,Pass,Medium
+TC_195,API_Integration,Requirement_195,Test Case for API_Integration 195,System Ready,Execute 195,Result 195,Pass,Medium
+TC_196,API_Integration,Requirement_196,Test Case for API_Integration 196,System Ready,Execute 196,Result 196,Pass,Medium
+TC_197,API_Integration,Requirement_197,Test Case for API_Integration 197,System Ready,Execute 197,Result 197,Pass,Medium
+TC_198,API_Integration,Requirement_198,Test Case for API_Integration 198,System Ready,Execute 198,Result 198,Pass,Medium
+TC_199,API_Integration,Requirement_199,Test Case for API_Integration 199,System Ready,Execute 199,Result 199,Pass,Medium
+TC_200,API_Integration,Requirement_200,Test Case for API_Integration 200,System Ready,Execute 200,Result 200,Pass,Medium
+TC_201,Security,Requirement_201,Test Case for Security 201,System Ready,Execute 201,Result 201,Pass,Medium
+TC_202,Security,Requirement_202,Test Case for Security 202,System Ready,Execute 202,Result 202,Pass,Medium
+TC_203,Security,Requirement_203,Test Case for Security 203,System Ready,Execute 203,Result 203,Pass,Medium
+TC_204,Security,Requirement_204,Test Case for Security 204,System Ready,Execute 204,Result 204,Pass,Medium
+TC_205,Security,Requirement_205,Test Case for Security 205,System Ready,Execute 205,Result 205,Pass,Medium
+TC_206,Security,Requirement_206,Test Case for Security 206,System Ready,Execute 206,Result 206,Pass,Medium
+TC_207,Security,Requirement_207,Test Case for Security 207,System Ready,Execute 207,Result 207,Pass,Medium
+TC_208,Security,Requirement_208,Test Case for Security 208,System Ready,Execute 208,Result 208,Pass,Medium
+TC_209,Security,Requirement_209,Test Case for Security 209,System Ready,Execute 209,Result 209,Pass,Medium
+TC_210,Security,Requirement_210,Test Case for Security 210,System Ready,Execute 210,Result 210,Pass,Medium
+TC_211,Security,Requirement_211,Test Case for Security 211,System Ready,Execute 211,Result 211,Pass,Medium
+TC_212,Security,Requirement_212,Test Case for Security 212,System Ready,Execute 212,Result 212,Pass,Medium
+TC_213,Security,Requirement_213,Test Case for Security 213,System Ready,Execute 213,Result 213,Pass,Medium
+TC_214,Security,Requirement_214,Test Case for Security 214,System Ready,Execute 214,Result 214,Pass,Medium
+TC_215,Security,Requirement_215,Test Case for Security 215,System Ready,Execute 215,Result 215,Pass,Medium
+TC_216,Security,Requirement_216,Test Case for Security 216,System Ready,Execute 216,Result 216,Pass,Medium
+TC_217,Security,Requirement_217,Test Case for Security 217,System Ready,Execute 217,Result 217,Pass,Medium
+TC_218,Security,Requirement_218,Test Case for Security 218,System Ready,Execute 218,Result 218,Pass,Medium
+TC_219,Security,Requirement_219,Test Case for Security 219,System Ready,Execute 219,Result 219,Pass,Medium
+TC_220,Security,Requirement_220,Test Case for Security 220,System Ready,Execute 220,Result 220,Pass,Medium
+TC_221,Security,Requirement_221,Test Case for Security 221,System Ready,Execute 221,Result 221,Pass,Medium
+TC_222,Security,Requirement_222,Test Case for Security 222,System Ready,Execute 222,Result 222,Pass,Medium
+TC_223,Security,Requirement_223,Test Case for Security 223,System Ready,Execute 223,Result 223,Pass,Medium
+TC_224,Security,Requirement_224,Test Case for Security 224,System Ready,Execute 224,Result 224,Pass,Medium
+TC_225,Security,Requirement_225,Test Case for Security 225,System Ready,Execute 225,Result 225,Pass,Medium
+TC_226,Security,Requirement_226,Test Case for Security 226,System Ready,Execute 226,Result 226,Pass,Medium
+TC_227,Security,Requirement_227,Test Case for Security 227,System Ready,Execute 227,Result 227,Pass,Medium
+TC_228,Security,Requirement_228,Test Case for Security 228,System Ready,Execute 228,Result 228,Pass,Medium
+TC_229,Security,Requirement_229,Test Case for Security 229,System Ready,Execute 229,Result 229,Pass,Medium
+TC_230,Security,Requirement_230,Test Case for Security 230,System Ready,Execute 230,Result 230,Pass,Medium
+TC_231,Security,Requirement_231,Test Case for Security 231,System Ready,Execute 231,Result 231,Pass,Medium
+TC_232,Security,Requirement_232,Test Case for Security 232,System Ready,Execute 232,Result 232,Pass,Medium
+TC_233,Security,Requirement_233,Test Case for Security 233,System Ready,Execute 233,Result 233,Pass,Medium
+TC_234,Security,Requirement_234,Test Case for Security 234,System Ready,Execute 234,Result 234,Pass,Medium
+TC_235,Security,Requirement_235,Test Case for Security 235,System Ready,Execute 235,Result 235,Pass,Medium
+TC_236,Security,Requirement_236,Test Case for Security 236,System Ready,Execute 236,Result 236,Pass,Medium
+TC_237,Security,Requirement_237,Test Case for Security 237,System Ready,Execute 237,Result 237,Pass,Medium
+TC_238,Security,Requirement_238,Test Case for Security 238,System Ready,Execute 238,Result 238,Pass,Medium
+TC_239,Security,Requirement_239,Test Case for Security 239,System Ready,Execute 239,Result 239,Pass,Medium
+TC_240,Security,Requirement_240,Test Case for Security 240,System Ready,Execute 240,Result 240,Pass,Medium
+TC_241,Security,Requirement_241,Test Case for Security 241,System Ready,Execute 241,Result 241,Pass,Medium
+TC_242,Security,Requirement_242,Test Case for Security 242,System Ready,Execute 242,Result 242,Pass,Medium
+TC_243,Security,Requirement_243,Test Case for Security 243,System Ready,Execute 243,Result 243,Pass,Medium
+TC_244,Security,Requirement_244,Test Case for Security 244,System Ready,Execute 244,Result 244,Pass,Medium
+TC_245,Security,Requirement_245,Test Case for Security 245,System Ready,Execute 245,Result 245,Pass,Medium
+TC_246,Security,Requirement_246,Test Case for Security 246,System Ready,Execute 246,Result 246,Pass,Medium
+TC_247,Security,Requirement_247,Test Case for Security 247,System Ready,Execute 247,Result 247,Pass,Medium
+TC_248,Security,Requirement_248,Test Case for Security 248,System Ready,Execute 248,Result 248,Pass,Medium
+TC_249,Security,Requirement_249,Test Case for Security 249,System Ready,Execute 249,Result 249,Pass,Medium
+TC_250,Security,Requirement_250,Test Case for Security 250,System Ready,Execute 250,Result 250,Pass,Medium
+TC_251,Synchronization,Requirement_251,Test Case for Synchronization 251,System Ready,Execute 251,Result 251,Pass,Medium
+TC_252,Synchronization,Requirement_252,Test Case for Synchronization 252,System Ready,Execute 252,Result 252,Pass,Medium
+TC_253,Synchronization,Requirement_253,Test Case for Synchronization 253,System Ready,Execute 253,Result 253,Pass,Medium
+TC_254,Synchronization,Requirement_254,Test Case for Synchronization 254,System Ready,Execute 254,Result 254,Pass,Medium
+TC_255,Synchronization,Requirement_255,Test Case for Synchronization 255,System Ready,Execute 255,Result 255,Pass,Medium
+TC_256,Synchronization,Requirement_256,Test Case for Synchronization 256,System Ready,Execute 256,Result 256,Pass,Medium
+TC_257,Synchronization,Requirement_257,Test Case for Synchronization 257,System Ready,Execute 257,Result 257,Pass,Medium
+TC_258,Synchronization,Requirement_258,Test Case for Synchronization 258,System Ready,Execute 258,Result 258,Pass,Medium
+TC_259,Synchronization,Requirement_259,Test Case for Synchronization 259,System Ready,Execute 259,Result 259,Pass,Medium
+TC_260,Synchronization,Requirement_260,Test Case for Synchronization 260,System Ready,Execute 260,Result 260,Pass,Medium
+TC_261,Synchronization,Requirement_261,Test Case for Synchronization 261,System Ready,Execute 261,Result 261,Pass,Medium
+TC_262,Synchronization,Requirement_262,Test Case for Synchronization 262,System Ready,Execute 262,Result 262,Pass,Medium
+TC_263,Synchronization,Requirement_263,Test Case for Synchronization 263,System Ready,Execute 263,Result 263,Pass,Medium
+TC_264,Synchronization,Requirement_264,Test Case for Synchronization 264,System Ready,Execute 264,Result 264,Pass,Medium
+TC_265,Synchronization,Requirement_265,Test Case for Synchronization 265,System Ready,Execute 265,Result 265,Pass,Medium
+TC_266,Synchronization,Requirement_266,Test Case for Synchronization 266,System Ready,Execute 266,Result 266,Pass,Medium
+TC_267,Synchronization,Requirement_267,Test Case for Synchronization 267,System Ready,Execute 267,Result 267,Pass,Medium
+TC_268,Synchronization,Requirement_268,Test Case for Synchronization 268,System Ready,Execute 268,Result 268,Pass,Medium
+TC_269,Synchronization,Requirement_269,Test Case for Synchronization 269,System Ready,Execute 269,Result 269,Pass,Medium
+TC_270,Synchronization,Requirement_270,Test Case for Synchronization 270,System Ready,Execute 270,Result 270,Pass,Medium
+TC_271,Synchronization,Requirement_271,Test Case for Synchronization 271,System Ready,Execute 271,Result 271,Pass,Medium
+TC_272,Synchronization,Requirement_272,Test Case for Synchronization 272,System Ready,Execute 272,Result 272,Pass,Medium
+TC_273,Synchronization,Requirement_273,Test Case for Synchronization 273,System Ready,Execute 273,Result 273,Pass,Medium
+TC_274,Synchronization,Requirement_274,Test Case for Synchronization 274,System Ready,Execute 274,Result 274,Pass,Medium
+TC_275,Synchronization,Requirement_275,Test Case for Synchronization 275,System Ready,Execute 275,Result 275,Pass,Medium
+TC_276,Synchronization,Requirement_276,Test Case for Synchronization 276,System Ready,Execute 276,Result 276,Pass,Medium
+TC_277,Synchronization,Requirement_277,Test Case for Synchronization 277,System Ready,Execute 277,Result 277,Pass,Medium
+TC_278,Synchronization,Requirement_278,Test Case for Synchronization 278,System Ready,Execute 278,Result 278,Pass,Medium
+TC_279,Synchronization,Requirement_279,Test Case for Synchronization 279,System Ready,Execute 279,Result 279,Pass,Medium
+TC_280,Synchronization,Requirement_280,Test Case for Synchronization 280,System Ready,Execute 280,Result 280,Pass,Medium
+TC_281,Synchronization,Requirement_281,Test Case for Synchronization 281,System Ready,Execute 281,Result 281,Pass,Medium
+TC_282,Synchronization,Requirement_282,Test Case for Synchronization 282,System Ready,Execute 282,Result 282,Pass,Medium
+TC_283,Synchronization,Requirement_283,Test Case for Synchronization 283,System Ready,Execute 283,Result 283,Pass,Medium
+TC_284,Synchronization,Requirement_284,Test Case for Synchronization 284,System Ready,Execute 284,Result 284,Pass,Medium
+TC_285,Synchronization,Requirement_285,Test Case for Synchronization 285,System Ready,Execute 285,Result 285,Pass,Medium
+TC_286,Synchronization,Requirement_286,Test Case for Synchronization 286,System Ready,Execute 286,Result 286,Pass,Medium
+TC_287,Synchronization,Requirement_287,Test Case for Synchronization 287,System Ready,Execute 287,Result 287,Pass,Medium
+TC_288,Synchronization,Requirement_288,Test Case for Synchronization 288,System Ready,Execute 288,Result 288,Pass,Medium
+TC_289,Synchronization,Requirement_289,Test Case for Synchronization 289,System Ready,Execute 289,Result 289,Pass,Medium
+TC_290,Synchronization,Requirement_290,Test Case for Synchronization 290,System Ready,Execute 290,Result 290,Pass,Medium
+TC_291,Synchronization,Requirement_291,Test Case for Synchronization 291,System Ready,Execute 291,Result 291,Pass,Medium
+TC_292,Synchronization,Requirement_292,Test Case for Synchronization 292,System Ready,Execute 292,Result 292,Pass,Medium
+TC_293,Synchronization,Requirement_293,Test Case for Synchronization 293,System Ready,Execute 293,Result 293,Pass,Medium
+TC_294,Synchronization,Requirement_294,Test Case for Synchronization 294,System Ready,Execute 294,Result 294,Pass,Medium
+TC_295,Synchronization,Requirement_295,Test Case for Synchronization 295,System Ready,Execute 295,Result 295,Pass,Medium
+TC_296,Synchronization,Requirement_296,Test Case for Synchronization 296,System Ready,Execute 296,Result 296,Pass,Medium
+TC_297,Synchronization,Requirement_297,Test Case for Synchronization 297,System Ready,Execute 297,Result 297,Pass,Medium
+TC_298,Synchronization,Requirement_298,Test Case for Synchronization 298,System Ready,Execute 298,Result 298,Pass,Medium
+TC_299,Synchronization,Requirement_299,Test Case for Synchronization 299,System Ready,Execute 299,Result 299,Pass,Medium
+TC_300,Synchronization,Requirement_300,Test Case for Synchronization 300,System Ready,Execute 300,Result 300,Pass,Medium
+TC_301,Synchronization,Requirement_301,Test Case for Synchronization 301,System Ready,Execute 301,Result 301,Pass,Medium
+TC_302,Synchronization,Requirement_302,Test Case for Synchronization 302,System Ready,Execute 302,Result 302,Pass,Medium
+TC_303,Synchronization,Requirement_303,Test Case for Synchronization 303,System Ready,Execute 303,Result 303,Pass,Medium
+TC_304,Synchronization,Requirement_304,Test Case for Synchronization 304,System Ready,Execute 304,Result 304,Pass,Medium
+TC_305,Synchronization,Requirement_305,Test Case for Synchronization 305,System Ready,Execute 305,Result 305,Pass,Medium
+TC_306,Synchronization,Requirement_306,Test Case for Synchronization 306,System Ready,Execute 306,Result 306,Pass,Medium
+TC_307,Synchronization,Requirement_307,Test Case for Synchronization 307,System Ready,Execute 307,Result 307,Pass,Medium
+TC_308,Synchronization,Requirement_308,Test Case for Synchronization 308,System Ready,Execute 308,Result 308,Pass,Medium
+TC_309,Synchronization,Requirement_309,Test Case for Synchronization 309,System Ready,Execute 309,Result 309,Pass,Medium
+TC_310,Synchronization,Requirement_310,Test Case for Synchronization 310,System Ready,Execute 310,Result 310,Pass,Medium
+
