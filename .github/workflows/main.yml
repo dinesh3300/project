@@ -68,11 +68,16 @@ jobs:
           cd web
           npm install
 
+      - name: Build Web Application Bundle
+        run: |
+          cd web
+          npm run build
+
       - name: Start Web Application Server
         run: |
           cd web
-          npm run dev &
-          npx wait-on http://127.0.0.1:5173 --timeout 60000
+          npx serve -s dist -p 5173 &
+          npx wait-on http://127.0.0.1:5173 --timeout 30000
 
       - name: Install Selenium Test Runner Dependencies
         run: |
