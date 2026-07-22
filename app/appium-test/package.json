@@ -1,0 +1,25 @@
+{
+  "name": "nuerocheck-appium-tests",
+  "version": "1.0.0",
+  "description": "Appium E2E Automation Test Suite for NeuroCheck Android Mobile App",
+  "main": "tests/android_appium.test.js",
+  "scripts": {
+    "test": "mocha tests/*.test.js --timeout 120000",
+    "test:auth": "mocha tests/auth_appium.test.js --timeout 120000",
+    "test:scan": "mocha tests/scan_appium.test.js --timeout 120000"
+  },
+  "keywords": [
+    "appium",
+    "android",
+    "automation",
+    "e2e",
+    "testing",
+    "uiautomator2",
+    "nuerocheck"
+  ],
+  "dependencies": {
+    "webdriverio": "^8.35.0",
+    "mocha": "^10.4.0",
+    "chai": "^4.4.1"
+  }
+}
