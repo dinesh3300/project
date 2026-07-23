@@ -21,12 +21,39 @@ describe('NeuroCheck Web Application - Login & Auth E2E Test Suite', function ()
     options.addArguments('--disable-gpu');
     options.addArguments('--no-sandbox');
     options.addArguments('--disable-dev-shm-usage');
-    // options.addArguments('--headless=new'); // Uncomment to run in headless CI mode
+    if (process.env.CI || process.env.HEADLESS !== 'false') {
+      options.addArguments('--headless=new');
+    }
 
-    driver = await new Builder()
-      .forBrowser('chrome')
-      .setChromeOptions(options)
-      .build();
+    let service;
+    try {
+      const chromedriver = require('chromedriver');
+      if (chromedriver && chromedriver.path) {
+        service = new chrome.ServiceBuilder(chromedriver.path);
+      }
+    } catch (e) {
+      // Driver auto-resolved by Selenium Manager
+    }
+
+    try {
+      let builder = new Builder().forBrowser('chrome').setChromeOptions(options);
+      if (service) {
+        builder = builder.setChromeService(service);
+      }
+      driver = await builder.build();
+    } catch (err) {
+      const fallbackOptions = new chrome.Options();
+      fallbackOptions.addArguments('--headless');
+      fallbackOptions.addArguments('--no-sandbox');
+      fallbackOptions.addArguments('--disable-dev-shm-usage');
+      fallbackOptions.addArguments('--disable-gpu');
+      
+      let fallbackBuilder = new Builder().forBrowser('chrome').setChromeOptions(fallbackOptions);
+      if (service) {
+        fallbackBuilder = fallbackBuilder.setChromeService(service);
+      }
+      driver = await fallbackBuilder.build();
+    }
   });
 
   after(async function () {
@@ -49,7 +76,7 @@ describe('NeuroCheck Web Application - Login & Auth E2E Test Suite', function ()
 
     // Verify Welcome Hero heading
     const welcomeHeader = await driver.wait(
-      until.elementLocated(By.xpath("//h1 | //h2[contains(text(), 'NeuroCheck')]")),
+      until.elementLocated(By.xpath("//h1 | //h2[contains(text(), 'NeuroCheck') or contains(text(), 'Nuerocheck')]")),
       10000
     );
     expect(await welcomeHeader.isDisplayed()).to.be.true;

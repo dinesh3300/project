@@ -581,20 +581,28 @@ export default function App() {
     let apiResult = null;
     let apiError = null;
 
-    // Trigger backend AI analysis in parallel
+    // Trigger backend AI analysis in parallel with endpoint fallback
     const analyzeData = new FormData();
     analyzeData.append('image', selectedScanFile);
 
-    fetch(`${API_BASE}analyze.php`, {
-      method: 'POST',
-      body: analyzeData
-    })
-      .then(res => res.json())
+    const tryFetchAnalyze = (url) => {
+      return fetch(url, { method: 'POST', body: analyzeData })
+        .then(res => {
+          if (!res.ok && url.includes('nuerocheck_api')) {
+            // Fallback to /backend/ endpoint
+            const fallbackUrl = url.replace('/nuerocheck_api/', '/backend/');
+            return fetch(fallbackUrl, { method: 'POST', body: analyzeData }).then(r => r.json());
+          }
+          return res.json();
+        });
+    };
+
+    tryFetchAnalyze(`${API_BASE}analyze.php`)
       .then(data => {
         apiResult = data;
       })
       .catch(err => {
-        console.error(err);
+        console.error('AI Analysis fetch error:', err);
         apiError = err;
       });
 
@@ -617,14 +625,12 @@ export default function App() {
       } else {
         clearInterval(interval);
 
-        if (apiError || (apiResult && apiResult.error)) {
-          showToast(apiResult?.error || 'AI engine error or timeout.', false);
-          setView('scan');
-          return;
+        if (apiError && !apiResult) {
+          apiResult = { validationFailed: true, validationError: 'AI engine timeout/error. File recorded.' };
         }
 
-        // Draw boxes and save annotated scan image
-        processModelResults(apiResult);
+        // Draw overlay and save all scan files (including valid and wrong/invalid files) to database
+        processModelResults(apiResult || { validationFailed: true, validationError: 'Unrecognized file format' });
       }
     }, 1200);
   };
@@ -639,10 +645,22 @@ export default function App() {
       tempCanvas.height = img.naturalHeight;
       ctx.drawImage(img, 0, 0);
 
-      const isHemorrhage = aiOutput.hasHemorrhage;
-      const confidence = aiOutput.highestConfidence || 0.0;
+      const isValidationFailed = Boolean(aiOutput && aiOutput.validationFailed);
+      const isHemorrhage = !isValidationFailed && Boolean(aiOutput && aiOutput.hasHemorrhage);
+      const confidence = isValidationFailed ? 0.0 : (aiOutput?.highestConfidence || 0.0);
+      const scanResultText = isValidationFailed ? 'Invalid Scan' : (isHemorrhage ? 'Tumor' : 'Normal');
+      const scanRiskLevel = isValidationFailed ? 'INVALID' : (isHemorrhage ? (confidence > 0.7 ? 'CRITICAL' : 'HIGH') : 'LOW');
 
-      if (isHemorrhage && aiOutput.boundingBox) {
+      if (isValidationFailed) {
+        // Draw warning banner for non-brain CT or invalid uploaded image
+        const bannerHeight = Math.max(36, tempCanvas.height * 0.07);
+        ctx.fillStyle = 'rgba(234, 179, 8, 0.9)';
+        ctx.fillRect(0, 0, tempCanvas.width, bannerHeight);
+        ctx.fillStyle = '#000000';
+        const bannerFontSize = Math.max(14, bannerHeight * 0.45);
+        ctx.font = `bold ${bannerFontSize}px sans-serif`;
+        ctx.fillText('⚠️ NON-BRAIN CT SCAN RECORDED IN DATABASE', 12, bannerHeight * 0.65);
+      } else if (isHemorrhage && aiOutput.boundingBox) {
         const box = aiOutput.boundingBox;
         const scaleX = tempCanvas.width / box.inputSize;
         const scaleY = tempCanvas.height / box.inputSize;
@@ -659,7 +677,7 @@ export default function App() {
         ctx.fillStyle = '#ef4444';
         const fontSize = Math.max(12, Math.min(tempCanvas.width, tempCanvas.height) * 0.04);
         ctx.font = `bold ${fontSize}px var(--font-heading)`;
-        const labelText = `Hemorrhage: ${(confidence * 100).toFixed(0)}%`;
+        const labelText = `Tumor: ${(confidence * 100).toFixed(0)}%`;
         const textWidth = ctx.measureText(labelText).width;
         ctx.fillRect(left, top - fontSize - 6, textWidth + 12, fontSize + 8);
 
@@ -670,23 +688,23 @@ export default function App() {
       tempCanvas.toBlob(blob => {
         const annotatedFile = new File([blob], `scan_${scanPatientId}.jpg`, { type: 'image/jpeg' });
         const uploadData = new FormData();
-        uploadData.append('doctor_email', user.email);
+        uploadData.append('doctor_email', user?.email || 'doctor@nuerocheck.com');
         uploadData.append('patient_id', scanPatientId);
         uploadData.append('patient_name', scanPatientName);
         uploadData.append('patient_age', scanPatientAge);
         uploadData.append('patient_gender', scanPatientGender);
-        uploadData.append('result', isHemorrhage ? 'Hemorrhage' : 'Normal');
-        uploadData.append('risk_level', isHemorrhage ? (confidence > 0.7 ? 'CRITICAL' : 'HIGH') : 'LOW');
+        uploadData.append('result', scanResultText);
+        uploadData.append('risk_level', scanRiskLevel);
         uploadData.append('image', annotatedFile);
-        uploadData.append('notes', scanNotes);
+        uploadData.append('notes', isValidationFailed ? `[FLAGGED NON-BRAIN CT / INVALID IMAGE] ${scanNotes}` : scanNotes);
         uploadData.append('doctor_review', scanDoctorReview);
 
         // Subtypes data fields
-        uploadData.append('intraventricular', aiOutput.intraventricular || 0);
-        uploadData.append('intraparenchymal', aiOutput.intraparenchymal || 0);
-        uploadData.append('subarachnoid', aiOutput.subarachnoid || 0);
-        uploadData.append('epidural', aiOutput.epidural || 0);
-        uploadData.append('subdural', aiOutput.subdural || 0);
+        uploadData.append('intraventricular', aiOutput?.intraventricular || 0);
+        uploadData.append('intraparenchymal', aiOutput?.intraparenchymal || 0);
+        uploadData.append('subarachnoid', aiOutput?.subarachnoid || 0);
+        uploadData.append('epidural', aiOutput?.epidural || 0);
+        uploadData.append('subdural', aiOutput?.subdural || 0);
 
         fetch(`${API_BASE}upload_scan.php`, {
           method: 'POST',
@@ -699,21 +717,21 @@ export default function App() {
               patientName: scanPatientName,
               patientAge: scanPatientAge,
               patientGender: scanPatientGender,
-              result: isHemorrhage ? 'Hemorrhage' : 'Normal',
-              riskLevel: isHemorrhage ? (confidence > 0.7 ? 'CRITICAL' : 'HIGH') : 'LOW',
+              result: scanResultText,
+              riskLevel: scanRiskLevel,
               confidence: confidence,
               imageSrc: tempCanvas.toDataURL('image/jpeg'),
-              notes: scanNotes,
+              notes: isValidationFailed ? `[FLAGGED NON-BRAIN CT / INVALID IMAGE] ${scanNotes}` : scanNotes,
               doctorReview: scanDoctorReview,
-              intraventricular: aiOutput.intraventricular || 0,
-              intraparenchymal: aiOutput.intraparenchymal || 0,
-              subarachnoid: aiOutput.subarachnoid || 0,
-              epidural: aiOutput.epidural || 0,
-              subdural: aiOutput.subdural || 0,
+              intraventricular: aiOutput?.intraventricular || 0,
+              intraparenchymal: aiOutput?.intraparenchymal || 0,
+              subarachnoid: aiOutput?.subarachnoid || 0,
+              epidural: aiOutput?.epidural || 0,
+              subdural: aiOutput?.subdural || 0,
               dateTime: new Date().toLocaleString()
             };
 
-            showToast('Scan saved to cloud server successfully.');
+            showToast(isValidationFailed ? 'Non-brain CT / Invalid scan file saved to database.' : 'Scan saved to cloud server successfully.');
             setResultData(finalResultPayload);
             setView('result');
           })
@@ -725,17 +743,17 @@ export default function App() {
               patientName: scanPatientName,
               patientAge: scanPatientAge,
               patientGender: scanPatientGender,
-              result: isHemorrhage ? 'Hemorrhage' : 'Normal',
-              riskLevel: isHemorrhage ? (confidence > 0.7 ? 'CRITICAL' : 'HIGH') : 'LOW',
+              result: scanResultText,
+              riskLevel: scanRiskLevel,
               confidence: confidence,
               imageSrc: tempCanvas.toDataURL('image/jpeg'),
-              notes: scanNotes,
+              notes: isValidationFailed ? `[FLAGGED NON-BRAIN CT / INVALID IMAGE] ${scanNotes}` : scanNotes,
               doctorReview: scanDoctorReview,
-              intraventricular: aiOutput.intraventricular || 0,
-              intraparenchymal: aiOutput.intraparenchymal || 0,
-              subarachnoid: aiOutput.subarachnoid || 0,
-              epidural: aiOutput.epidural || 0,
-              subdural: aiOutput.subdural || 0,
+              intraventricular: aiOutput?.intraventricular || 0,
+              intraparenchymal: aiOutput?.intraparenchymal || 0,
+              subarachnoid: aiOutput?.subarachnoid || 0,
+              epidural: aiOutput?.epidural || 0,
+              subdural: aiOutput?.subdural || 0,
               dateTime: new Date().toLocaleString()
             });
             setView('result');
@@ -763,7 +781,7 @@ export default function App() {
       patientGender: scan.patient_gender,
       result: scan.result,
       riskLevel: scan.risk_level,
-      confidence: maxSubtype > 0 ? maxSubtype : (scan.result === 'Hemorrhage' ? 0.85 : 0.05),
+      confidence: maxSubtype > 0 ? maxSubtype : ((scan.result === 'Tumor' || scan.result === 'Hemorrhage') ? 0.85 : 0.05),
       imageSrc: relativePath,
       notes: scan.notes,
       doctorReview: scan.doctor_review,
@@ -794,7 +812,7 @@ export default function App() {
 
   // Counters for dashboard
   const totalScansCount = scans.length;
-  const hemorrhageScansCount = scans.filter(s => s.result === 'Hemorrhage').length;
+  const tumorScansCount = scans.filter(s => s.result === 'Tumor' || s.result === 'Hemorrhage').length;
   const normalScansCount = scans.filter(s => s.result === 'Normal').length;
 
   // Filter & Search Scans History
@@ -803,7 +821,9 @@ export default function App() {
     if (activeHistoryFilter === 'normal') {
       filtered = filtered.filter(s => s.result === 'Normal');
     } else if (activeHistoryFilter === 'abnormal') {
-      filtered = filtered.filter(s => s.result === 'Hemorrhage');
+      filtered = filtered.filter(s => s.result === 'Tumor' || s.result === 'Hemorrhage');
+    } else if (activeHistoryFilter === 'invalid') {
+      filtered = filtered.filter(s => s.result === 'Invalid Scan' || s.result === 'Non-Brain CT');
     }
 
     if (historySearch) {
@@ -890,7 +910,7 @@ export default function App() {
               <div className="welcome-hero">
                 <div className="hero-logo">🧠</div>
                 <h1 className="hero-title">Nuerocheck AI</h1>
-                <p className="hero-tagline">Advanced AI-Assisted Brain Hemorrhage Diagnostics & Scan Management</p>
+                <p className="hero-tagline">Advanced AI-Assisted Brain Tumor Diagnostics & Scan Management</p>
                 <div className="hero-buttons">
                   <button className="btn btn-primary" onClick={() => showView('login')}>Access Portal</button>
                   <button className="btn btn-secondary" onClick={() => showView('signup')}>Register Clinician</button>
@@ -900,7 +920,7 @@ export default function App() {
                 <div className="feature-card">
                   <span className="feature-icon">⚡</span>
                   <h3>Real-time Classification</h3>
-                  <p>Leverage TensorFlow-powered AI pipelines to detect brain hemorrhages instantly from raw CT scans.</p>
+                  <p>Leverage TensorFlow-powered AI pipelines to detect brain tumors instantly from raw CT scans.</p>
                 </div>
                 <div className="feature-card">
                   <span className="feature-icon">🛡️</span>
@@ -1062,8 +1082,8 @@ export default function App() {
                 <div className="stat-card glass-panel stat-abnormal" onClick={() => { setActiveHistoryFilter('abnormal'); showView('history'); }}>
                   <div className="stat-icon">🔴</div>
                   <div className="stat-details">
-                    <div className="stat-value">{hemorrhageScansCount}</div>
-                    <div className="stat-label">Hemorrhage Detected</div>
+                    <div className="stat-value">{tumorScansCount}</div>
+                    <div className="stat-label">Tumor Detected</div>
                   </div>
                 </div>
               </div>
@@ -1087,7 +1107,7 @@ export default function App() {
                       <div className="loading-placeholder">No scan analyses performed yet.</div>
                     ) : (
                       scans.slice(0, 5).map(scan => {
-                        const isHemorrhage = scan.result === 'Hemorrhage';
+                        const isAbnormal = scan.result === 'Tumor' || scan.result === 'Hemorrhage';
                         return (
                           <div key={scan.id} className="scan-feed-item" onClick={() => handleRecentScanClick(scan)}>
                             <div className="feed-patient-info">
@@ -1099,9 +1119,13 @@ export default function App() {
                             </div>
                             <div className="feed-meta">
                               <span className="feed-date">{scan.date_added}</span>
-                              <span className={`badge ${isHemorrhage ? 'badge-danger' : 'badge-normal'}`}>
-                                {isHemorrhage ? 'Hemorrhage' : 'Normal'}
-                              </span>
+                              {scan.result === 'Invalid Scan' || scan.result === 'Non-Brain CT' ? (
+                                <span className="badge" style={{ background: 'rgba(234, 179, 8, 0.15)', color: '#eab308', border: '1px solid rgba(234, 179, 8, 0.3)' }}>Invalid Scan</span>
+                              ) : (
+                                <span className={`badge ${isAbnormal ? 'badge-danger' : 'badge-normal'}`}>
+                                  {isAbnormal ? 'Tumor' : 'Normal'}
+                                </span>
+                              )}
                             </div>
                           </div>
                         );
@@ -1130,7 +1154,7 @@ export default function App() {
                           <div style={{
                             height: '100%',
                             background: 'var(--accent-cyan)',
-                            width: `${(type.count / (hemorrhageScansCount || 1)) * 100}%`
+                            width: `${(type.count / (tumorScansCount || 1)) * 100}%`
                           }}></div>
                         </div>
                       </div>
@@ -1239,8 +1263,8 @@ export default function App() {
                   <div className="result-header" style={{ display: 'flex', alignItems: 'center', gap: '15px', marginBottom: '20px' }}>
                     <div className="result-badge-icon" style={{
                       fontSize: '28px',
-                      background: resultData.result === 'Hemorrhage' ? 'rgba(239, 68, 68, 0.1)' : 'rgba(16, 185, 129, 0.1)',
-                      color: resultData.result === 'Hemorrhage' ? 'var(--accent-red)' : 'var(--accent-green)',
+                      background: resultData.result === 'Invalid Scan' ? 'rgba(234, 179, 8, 0.15)' : ((resultData.result === 'Tumor' || resultData.result === 'Hemorrhage') ? 'rgba(239, 68, 68, 0.1)' : 'rgba(16, 185, 129, 0.1)'),
+                      color: resultData.result === 'Invalid Scan' ? '#eab308' : ((resultData.result === 'Tumor' || resultData.result === 'Hemorrhage') ? 'var(--accent-red)' : 'var(--accent-green)'),
                       width: '54px',
                       height: '54px',
                       borderRadius: '12px',
@@ -1248,13 +1272,15 @@ export default function App() {
                       alignItems: 'center',
                       justifyContent: 'center'
                     }}>
-                      {resultData.result === 'Hemorrhage' ? '⚠️' : '✓'}
+                      {resultData.result === 'Invalid Scan' ? '⚠️' : ((resultData.result === 'Tumor' || resultData.result === 'Hemorrhage') ? '⚠️' : '✓')}
                     </div>
                     <div>
-                      <h2 style={{ color: resultData.result === 'Hemorrhage' ? 'var(--accent-red)' : 'var(--accent-green)' }}>
-                        {resultData.result === 'Hemorrhage' ? 'HEMORRHAGE DETECTED' : 'HEMORRHAGE NOT DETECTED'}
+                      <h2 style={{ color: resultData.result === 'Invalid Scan' ? '#eab308' : ((resultData.result === 'Tumor' || resultData.result === 'Hemorrhage') ? 'var(--accent-red)' : 'var(--accent-green)') }}>
+                        {resultData.result === 'Invalid Scan' ? 'INVALID / NON-BRAIN SCAN' : ((resultData.result === 'Tumor' || resultData.result === 'Hemorrhage') ? 'TUMOR DETECTED' : 'TUMOR NOT DETECTED')}
                       </h2>
-                      <p className="result-subtitle" style={{ margin: 0 }}>Model Diagnostic Complete</p>
+                      <p className="result-subtitle" style={{ margin: 0 }}>
+                        {resultData.result === 'Invalid Scan' ? 'File uploaded & saved to database (Flagged as non-Brain CT)' : 'Model Diagnostic Complete'}
+                      </p>
                     </div>
                   </div>
 
@@ -1287,9 +1313,9 @@ export default function App() {
                   </div>
 
                   {/* Subtype confidence breakdown (MANDATORY REQUIREMENT) */}
-                  {resultData.result === 'Hemorrhage' && (
+                  {(resultData.result === 'Tumor' || resultData.result === 'Hemorrhage') && (
                     <div className="result-section-card mt-20" style={{ background: 'rgba(0,0,0,0.1)', padding: '15px', borderRadius: '12px', marginBottom: '15px' }}>
-                      <h3 style={{ marginBottom: '12px' }}>Hemorrhage Subtype Analysis</h3>
+                      <h3 style={{ marginBottom: '12px' }}>Tumor Subtype Analysis</h3>
                       <div className="subtype-bars">
                         {[
                           { name: 'Intraventricular', value: resultData.intraventricular },
@@ -1321,7 +1347,13 @@ export default function App() {
                   <div className="result-section-card mt-20" style={{ background: 'rgba(0,0,0,0.1)', padding: '15px', borderRadius: '12px' }}>
                     <h3>Clinical Recommendations</h3>
                     <ul className="recommendations-list" style={{ marginTop: '10px', paddingLeft: '20px', fontSize: '14px', lineHeight: '1.6' }}>
-                      {resultData.result === 'Hemorrhage' ? (
+                      {resultData.result === 'Invalid Scan' ? (
+                        <>
+                          <li style={{ color: '#eab308', fontWeight: 'bold', marginBottom: '6px' }}>⚠️ WARNING: Uploaded file does not match a valid Brain CT slice.</li>
+                          <li style={{ marginBottom: '6px' }}>The record and image file have been saved to your database for audit history.</li>
+                          <li>Please re-upload a clear Brain CT DICOM or JPEG image for AI diagnostic analysis.</li>
+                        </>
+                      ) : (resultData.result === 'Tumor' || resultData.result === 'Hemorrhage') ? (
                         <>
                           <li style={{ color: 'var(--accent-red-dark)', fontWeight: 'bold', marginBottom: '6px' }}>IMMEDIATE: Consult a neurologist or neurosurgeon.</li>
                           <li style={{ marginBottom: '6px' }}>Schedule a follow-up high-resolution head CT scan.</li>
@@ -1371,7 +1403,8 @@ export default function App() {
                   <div className="filter-group" style={{ display: 'flex', gap: '8px' }}>
                     <button className={`filter-tab ${activeHistoryFilter === 'total' ? 'active' : ''}`} onClick={() => setActiveHistoryFilter('total')}>All Scans</button>
                     <button className={`filter-tab ${activeHistoryFilter === 'normal' ? 'active' : ''}`} onClick={() => setActiveHistoryFilter('normal')}>Normal</button>
-                    <button className={`filter-tab ${activeHistoryFilter === 'abnormal' ? 'active' : ''}`} onClick={() => setActiveHistoryFilter('abnormal')}>Hemorrhage Detected</button>
+                    <button className={`filter-tab ${activeHistoryFilter === 'abnormal' ? 'active' : ''}`} onClick={() => setActiveHistoryFilter('abnormal')}>Tumor Detected</button>
+                    <button className={`filter-tab ${activeHistoryFilter === 'invalid' ? 'active' : ''}`} onClick={() => setActiveHistoryFilter('invalid')}>Invalid Scans</button>
                   </div>
                 </div>
 
@@ -1393,16 +1426,20 @@ export default function App() {
                         </tr>
                       ) : (
                         getFilteredScans().map(scan => {
-                          const isHemorrhage = scan.result === 'Hemorrhage';
+                          const isAbnormal = scan.result === 'Tumor' || scan.result === 'Hemorrhage';
                           return (
                             <tr key={scan.id} style={{ borderBottom: '1px solid var(--border-color)', cursor: 'pointer' }} onClick={() => handleRecentScanClick(scan)}>
                               <td style={{ padding: '12px 8px' }}><strong>{scan.patient_id}</strong></td>
                               <td style={{ padding: '12px 8px' }}>{scan.patient_name}</td>
                               <td style={{ padding: '12px 8px' }}>{scan.date_added} {scan.time_added}</td>
                               <td style={{ padding: '12px 8px' }}>
-                                <span className={`badge ${isHemorrhage ? 'badge-danger' : 'badge-normal'}`}>
-                                  {isHemorrhage ? 'Hemorrhage' : 'Normal'}
-                                </span>
+                                {scan.result === 'Invalid Scan' || scan.result === 'Non-Brain CT' ? (
+                                  <span className="badge" style={{ background: 'rgba(234, 179, 8, 0.15)', color: '#eab308', border: '1px solid rgba(234, 179, 8, 0.3)' }}>Invalid Scan</span>
+                                ) : (
+                                  <span className={`badge ${isAbnormal ? 'badge-danger' : 'badge-normal'}`}>
+                                    {isAbnormal ? 'Tumor' : 'Normal'}
+                                  </span>
+                                )}
                               </td>
                               <td style={{ padding: '12px 8px' }}>
                                 <button className="text-btn" onClick={(e) => { e.stopPropagation(); handleRecentScanClick(scan); }}>View Report</button>

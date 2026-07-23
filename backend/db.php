@@ -22,21 +22,33 @@ header("Content-Type: application/json; charset=UTF-8");
 $host = "localhost";
 $username = "root";
 $password = "";
-$database = "nuerocheck_web_db";
+$database = "nuerocheck_db";
 
-$conn = new mysqli($host, $username, $password, $database);
+$conn = @new mysqli($host, $username, $password, $database);
 if ($conn->connect_error) {
-    http_response_code(500);
-    echo json_encode([
-        "success" => false,
-        "status" => "error",
-        "error" => [
-            "code" => "DATABASE_CONNECTION_ERROR",
+    // Try fallback database names
+    $conn = @new mysqli($host, $username, $password, "nuerocheck_web_db");
+    if ($conn->connect_error) {
+        $conn = @new mysqli($host, $username, $password, "nuerocheck_app_db");
+    }
+}
+
+if ($conn->connect_error) {
+    if (isset($ALLOW_NO_DB) && $ALLOW_NO_DB) {
+        $conn = null;
+    } else {
+        http_response_code(500);
+        echo json_encode([
+            "success" => false,
+            "status" => "error",
+            "error" => [
+                "code" => "DATABASE_CONNECTION_ERROR",
+                "message" => "Database connection failed: " . $conn->connect_error
+            ],
             "message" => "Database connection failed: " . $conn->connect_error
-        ],
-        "message" => "Database connection failed: " . $conn->connect_error
-    ]);
-    exit;
+        ]);
+        exit;
+    }
 }
 
 // ── Centralized Response Formatters ───────────────────────────────

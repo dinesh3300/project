@@ -13,6 +13,12 @@ No manual setup needed — just copy files to XAMPP and go.
 import sys
 import os
 import subprocess
+import warnings
+
+# Suppress C++ TensorFlow and Python library warnings to ensure clean JSON output
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
+os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
+warnings.filterwarnings('ignore')
 
 # ── Auto-installer: runs silently on first use ────────────────────────────────
 def _ensure_packages():
@@ -44,11 +50,18 @@ _ensure_packages()
 
 # ── Imports (after auto-install) ─────────────────────────────────────────────
 import json
+import logging
 
 try:
+    _old_stderr = sys.stderr
+    sys.stderr = open(os.devnull, 'w')
     import tensorflow as tf
+    sys.stderr = _old_stderr
+    tf.get_logger().setLevel('ERROR')
+    logging.getLogger('tensorflow').setLevel(logging.ERROR)
     Interpreter = tf.lite.Interpreter
-except ImportError:
+except Exception:
+    sys.stderr = _old_stderr
     try:
         from ai_edge_litert.interpreter import Interpreter
     except ImportError:

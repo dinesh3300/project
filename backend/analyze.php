@@ -12,6 +12,7 @@
  *   Stage 3: Hemorrhage.tflite           (subtype ODT signature)
  */
 
+$ALLOW_NO_DB = true;
 require_once 'db.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -34,8 +35,10 @@ $ext      = 'jpg';
 $tmpDir   = sys_get_temp_dir();
 $tmpFile  = $tmpDir . DIRECTORY_SEPARATOR . 'nuerocheck_' . uniqid() . '.' . $ext;
 
-if (!move_uploaded_file($_FILES['image']['tmp_name'], $tmpFile)) {
-    send_error('Failed to save uploaded file to temp directory', "FILE_SAVE_ERROR", 500);
+if (!@move_uploaded_file($_FILES['image']['tmp_name'], $tmpFile)) {
+    if (!@copy($_FILES['image']['tmp_name'], $tmpFile)) {
+        send_error('Failed to save uploaded file to temp directory', "FILE_SAVE_ERROR", 500);
+    }
 }
 
 // ── Build the Python command ─────────────────────────────────────────────────
@@ -43,15 +46,32 @@ $scriptPath = __DIR__ . DIRECTORY_SEPARATOR . 'inference.py';
 $scriptPath = escapeshellarg($scriptPath);
 $imagePath  = escapeshellarg($tmpFile);
 
-// Use Python 3.11 explicitly — required for TensorFlow/TFLite on Windows
-// Python 3.13 (default) has DLL compatibility issues with TensorFlow
-$python311 = 'C:\\Users\\ADMIN\\AppData\\Local\\Programs\\Python\\Python311\\python.exe';
-if (file_exists($python311)) {
-    $pythonCmd = escapeshellarg($python311);
-} else {
-    // Fallback: try py launcher with version flag
-    exec('py -3.11 --version 2>&1', $verOut, $verCode);
-    $pythonCmd = ($verCode === 0) ? 'py -3.11' : 'python';
+// Dynamically resolve Python executable across virtualenvs, system installation paths, and PATH
+$possiblePythons = [
+    'C:\\Users\\ADMIN\\AppData\\Local\\Programs\\Python\\Python311\\python.exe',
+    'C:\\Users\\ADMIN\\AppData\\Local\\Programs\\Python\\Python313\\python.exe',
+    __DIR__ . '/venv/Scripts/python.exe',
+    __DIR__ . '/../venv/Scripts/python.exe',
+    __DIR__ . '/venv/bin/python',
+];
+
+$pythonCmd = '';
+foreach ($possiblePythons as $pyPath) {
+    if (file_exists($pyPath)) {
+        $pythonCmd = escapeshellarg($pyPath);
+        break;
+    }
+}
+
+if (empty($pythonCmd)) {
+    // Check system 'python' command
+    exec('python --version 2>&1', $pyOut, $pyCode);
+    if ($pyCode === 0) {
+        $pythonCmd = 'python';
+    } else {
+        exec('python3 --version 2>&1', $py3Out, $py3Code);
+        $pythonCmd = ($py3Code === 0) ? 'python3' : 'python';
+    }
 }
 
 // Run inference — 2>&1 redirects stderr into output for debugging
